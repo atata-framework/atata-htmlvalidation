@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>1.0.0</Version>
-    <Description>.NET library that performs HTML page validation using Atata and html-validate NPM package.
+    <Description>.NET library that adds HTML page validation to Atata using html-validate NPM package.
 
-Targets .NET Standard 2.0.</Description>
+      Targets .NET Standard 2.0.</Description>
     <RepositoryUrl>https://github.com/atata-framework/atata-htmlvalidation</RepositoryUrl>
     <PackageId>Atata.HtmlValidation</PackageId>
     <PackageTags>atata automation testing test selenium webdriver html</PackageTags>

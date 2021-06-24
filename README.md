@@ -6,7 +6,7 @@
 [![Atata docs](https://img.shields.io/badge/docs-Atata_Framework-orange.svg)](https://atata.io)
 [![Twitter](https://img.shields.io/badge/follow-@AtataFramework-blue.svg)](https://twitter.com/AtataFramework)
 
-**Atata.HtmlValidation** is a .NET library that performs HTML page validation using Atata and html-validate NPM package.
+**Atata.HtmlValidation** is a .NET library that adds HTML page validation to [Atata](https://github.com/atata-framework/atata) using [html-validate](https://www.npmjs.com/package/html-validate) NPM package.
 
 *Targets .NET Standard 2.0*
 
