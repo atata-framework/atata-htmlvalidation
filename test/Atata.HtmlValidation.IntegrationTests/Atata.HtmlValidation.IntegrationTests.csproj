@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Atata.WebDriverSetup" Version="1.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="NUnit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
@@ -12,6 +13,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Atata.HtmlValidation\Atata.HtmlValidation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestPages\Errors0.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestPages\Errors1.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

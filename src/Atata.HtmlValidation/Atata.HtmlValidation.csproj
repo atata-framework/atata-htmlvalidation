@@ -13,4 +13,10 @@
     <PackageProjectUrl>https://github.com/atata-framework/atata-htmlvalidation</PackageProjectUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Atata" Version="1.11.2" />
+    <PackageReference Include="Atata.Cli.HtmlValidate" Version="1.0.0" />
+    <PackageReference Include="Atata.Cli.Npm" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,107 @@
+﻿using System;
+using System.Text;
+using Atata.Cli.HtmlValidate;
+
+namespace Atata.HtmlValidation
+{
+    /// <summary>
+    /// Represents the set of options for HTML validation.
+    /// </summary>
+    public class HtmlValidationOptions
+    {
+        /// <summary>
+        /// Gets or sets the default options.
+        /// </summary>
+        public static HtmlValidationOptions Default { get; set; } = new HtmlValidationOptions();
+
+        /// <summary>
+        /// Gets or sets the working directory builder.
+        /// HTML and result files should be saved in working directory.
+        /// The default builder returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>.
+        /// </summary>
+        public Func<string> WorkingDirectoryBuilder { get; set; } =
+            () => AtataContext.Current?.Artifacts.FullName;
+
+        /// <summary>
+        /// Gets or sets the working directory where HTML and result files should be saved.
+        /// By default, returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>.
+        /// </summary>
+        public string WorkingDirectory
+        {
+            get => WorkingDirectoryBuilder?.Invoke();
+            set => WorkingDirectoryBuilder = () => value;
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum allowed warnings count.
+        /// The default value is <see langword="null"/>, which means that warnings are allowed.
+        /// Use <c>0</c> to disallow warnings.
+        /// </summary>
+        public int? MaxWarnings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the configuration file path (full or relative to <see cref="WorkingDirectory"/>).
+        /// </summary>
+        public string ConfigPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the formatter name.
+        /// The default value is <see cref="HtmlValidateFormatter.Names.Stylish"/>.
+        /// See <see cref="HtmlValidateFormatter.Names"/> class for options.
+        /// </summary>
+        public string OutputFormatter { get; set; } = HtmlValidateFormatter.Names.Stylish;
+
+        /// <summary>
+        /// Gets or sets the formatter name.
+        /// The default value is <see cref="HtmlValidateFormatter.Names.Codeframe"/>.
+        /// See <see cref="HtmlValidateFormatter.Names"/> class for options.
+        /// </summary>
+        public string ResultFileFormatter { get; set; } = HtmlValidateFormatter.Names.Codeframe;
+
+        /// <summary>
+        /// Gets or sets the result file extension, like ".txt" or ".json".
+        /// The default value is <see langword="null"/>, which means that
+        /// extension should be resolved automatically corresponding to <see cref="ResultFileFormatter"/> value.
+        /// </summary>
+        public string ResultFileExtension { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to save validation result output to file.
+        /// The default value is <see langword="true"/>.
+        /// </summary>
+        public bool SaveResultToFile { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to keep HTML file when it is valid.
+        /// The default value is <see langword="false"/>.
+        /// </summary>
+        public bool KeepHtmlFileWhenValid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the encoding to use.
+        /// </summary>
+        public Encoding Encoding { get; set; }
+
+        /// <summary>
+        /// Clones this instance with executing the action that can change some properties of the copy.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <returns>The copy of this instance.</returns>
+        public HtmlValidationOptions CloneWith(Action<HtmlValidationOptions> action)
+        {
+            action.CheckNotNull(nameof(action));
+
+            HtmlValidationOptions copy = Clone();
+            action.Invoke(copy);
+
+            return copy;
+        }
+
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        /// <returns>The copy of this instance.</returns>
+        public HtmlValidationOptions Clone() =>
+            (HtmlValidationOptions)MemberwiseClone();
+    }
+}
