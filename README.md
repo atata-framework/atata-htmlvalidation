@@ -27,7 +27,7 @@
 
 ## Features
 
-- Uses CLI of [html-validate](https://www.npmjs.com/package/html-validate) NPM package.
+- Uses [CLI of html-validate](https://html-validate.org/usage/cli.html) NPM package.
 - Validates HTML of Atata page objects.
 - Performs validation offline.
 - Supports different result formatters.
