@@ -22,6 +22,7 @@
 - [HtmlValidationResult Properties](#htmlvalidationresult-properties)
 - [Configuration](#configuration)
 - [Feedback](#feedback)
+- [Thanks](#thanks)
 - [SemVer](#semver)
 - [License](#license)
 
