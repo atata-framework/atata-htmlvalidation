@@ -230,6 +230,10 @@ If you faced an issue please report it to [Atata.HtmlValidation Issues](https://
 [ask a question on Stack Overflow](https://stackoverflow.com/questions/ask?tags=atata+csharp) using [atata](https://stackoverflow.com/questions/tagged/atata) tag
 or use another [Atata Contact](https://atata.io/contact/) way.
 
+## Thanks
+
+The library is implemented thanks to the sponsorship of **[Lombiq Technologies](https://lombiq.com/)**.
+
 ## SemVer
 
 Atata Framework follows [Semantic Versioning 2.0](https://semver.org/).
