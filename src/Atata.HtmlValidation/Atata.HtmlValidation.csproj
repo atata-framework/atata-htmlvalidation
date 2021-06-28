@@ -5,7 +5,16 @@
     <Version>1.0.0</Version>
     <Description>.NET library that adds HTML page validation to Atata using html-validate NPM package.
 
-      Targets .NET Standard 2.0.</Description>
+Targets .NET Standard 2.0.
+
+Features:
+- Uses CLI of html-validate (https://www.npmjs.com/package/html-validate) NPM package.
+- Validates HTML of Atata page objects.
+- Performs validation offline.
+- Supports different result formatters.
+- Supports custom validation rule sets by configuration files.
+- Saves HTML and validation results to artifact files.
+- Can produce either error or warning.</Description>
     <RepositoryUrl>https://github.com/atata-framework/atata-htmlvalidation</RepositoryUrl>
     <PackageId>Atata.HtmlValidation</PackageId>
     <PackageTags>atata automation testing test selenium webdriver html</PackageTags>

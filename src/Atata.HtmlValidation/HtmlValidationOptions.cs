@@ -17,14 +17,17 @@ namespace Atata.HtmlValidation
         /// <summary>
         /// Gets or sets the working directory builder.
         /// HTML and result files should be saved in working directory.
-        /// The default builder returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>.
+        /// The default builder returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>
+        /// or `AppDomain.CurrentDomain.BaseDirectory` if <see cref="AtataContext.Current"/> is <see langword="null"/>.
         /// </summary>
         public Func<string> WorkingDirectoryBuilder { get; set; } =
-            () => AtataContext.Current?.Artifacts.FullName;
+            () => AtataContext.Current?.Artifacts.FullName ?? AppDomain.CurrentDomain.BaseDirectory;
 
         /// <summary>
         /// Gets or sets the working directory where HTML and result files should be saved.
-        /// By default, returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>.
+        /// Gets and sets the value from/to <see cref="WorkingDirectoryBuilder"/> property.
+        /// By default, returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>
+        /// or `AppDomain.CurrentDomain.BaseDirectory` if <see cref="AtataContext.Current"/> is <see langword="null"/>.
         /// </summary>
         public string WorkingDirectory
         {
@@ -45,14 +48,14 @@ namespace Atata.HtmlValidation
         public string ConfigPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the formatter name.
+        /// Gets or sets the output formatter name.
         /// The default value is <see cref="HtmlValidateFormatter.Names.Stylish"/>.
         /// See <see cref="HtmlValidateFormatter.Names"/> class for options.
         /// </summary>
         public string OutputFormatter { get; set; } = HtmlValidateFormatter.Names.Stylish;
 
         /// <summary>
-        /// Gets or sets the formatter name.
+        /// Gets or sets the result file formatter name.
         /// The default value is <see cref="HtmlValidateFormatter.Names.Codeframe"/>.
         /// See <see cref="HtmlValidateFormatter.Names"/> class for options.
         /// </summary>
@@ -79,6 +82,8 @@ namespace Atata.HtmlValidation
 
         /// <summary>
         /// Gets or sets the encoding to use.
+        /// The default value is <see langword="null"/>,
+        /// which means that default encoding should be used.
         /// </summary>
         public Encoding Encoding { get; set; }
 
