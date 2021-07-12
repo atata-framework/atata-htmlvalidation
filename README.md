@@ -19,7 +19,7 @@
   - [Using ValidateHtml Extension Method](#using-validatehtml-extension-method) 
   - [Using HtmlValidator](#using-htmlvalidator)
 - [HtmlValidationOptions Properties](#htmlvalidationoptions-properties)
-- [HtmlValidationResult Members](#htmlvalidationresult-properties)
+- [HtmlValidationResult Members](#htmlvalidationresult-members)
 - [Configuration](#configuration)
 - [Feedback](#feedback)
 - [Thanks](#thanks)
@@ -209,6 +209,8 @@ HtmlValidationOptions.Default = new HtmlValidationOptions
 
 ## HtmlValidationResult Members
 
+### Properties
+
 - **`bool IsSuccessful { get; }`**\
   Gets a value indicating whether this result is successful.
 - **`string Output { get; }`**\
@@ -217,6 +219,9 @@ HtmlValidationOptions.Default = new HtmlValidationOptions
   Gets the HTML file path.
 - **`string ResultFilePath { get; }`**\
   Gets the result file path.
+
+### Methods
+
 - **`HtmlValidationResult MoveFilesToDirectory(string directory)`**\
   Moves the HTML and result files to another directory.
 
