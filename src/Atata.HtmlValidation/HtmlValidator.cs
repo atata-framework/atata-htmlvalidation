@@ -123,10 +123,31 @@ namespace Atata.HtmlValidation
             }
         }
 
-        private void EnsureCliIsInstalled() =>
-            new NpmCli()
-                .EnsureItIsInstalled()
-                .InstallIfMissing(HtmlValidateCli.Name, _options.RecommendedHtmlValidatePackageVersion, global: true);
+        private static void ExecuteAction(string sectionMessage, Action action)
+        {
+            if (AtataContext.Current is null)
+                action.Invoke();
+            else
+                AtataContext.Current.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), action);
+        }
+
+        private static TResult ExecuteFunction<TResult>(string sectionMessage, Func<TResult> function) =>
+            AtataContext.Current is null
+                ? function.Invoke()
+                : AtataContext.Current.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), function);
+
+        private void EnsureCliIsInstalled()
+        {
+            NpmCli npmCli = new NpmCli();
+
+            ExecuteAction(
+                "Ensure NPM is installed",
+                () => npmCli.EnsureItIsInstalled());
+
+            ExecuteAction(
+                $"Install {HtmlValidateCli.Name} NPM package if missing",
+                () => npmCli.InstallIfMissing(HtmlValidateCli.Name, _options.RecommendedHtmlValidatePackageVersion, global: true));
+        }
 
         private void WriteToFile(string path, string contents)
         {
@@ -140,27 +161,23 @@ namespace Atata.HtmlValidation
         {
             var cliOptions = CreateCliOptions(formatter);
 
-            HtmlValidateResult Execute()
+            var cli = HtmlValidateCli.InDirectory(workingDirectory);
+            cli.Encoding = _options.Encoding;
+
+            HtmlValidateResult Execute() =>
+                ExecuteFunction(
+                    $"Execute html-validate CLI command for \"{htmlFileName}\" with \"{cliOptions.Formatter.Name}\" formatter",
+                    () => cli.Validate(htmlFileName, cliOptions));
+
+            try
             {
-                var cli = HtmlValidateCli.InDirectory(workingDirectory);
-                cli.Encoding = _options.Encoding;
-
-                try
-                {
-                    return cli.Validate(htmlFileName, cliOptions);
-                }
-                catch (CliCommandException)
-                {
-                    EnsureCliIsInstalled();
-                    return cli.Validate(htmlFileName, cliOptions);
-                }
+                return Execute();
             }
-
-            return AtataContext.Current is null
-                ? Execute()
-                : AtataContext.Current.Log.ExecuteSection(
-                    new LogSection($"Execute html-validate CLI command for {htmlFileName}", LogLevel.Trace),
-                    Execute);
+            catch (CliCommandException)
+            {
+                EnsureCliIsInstalled();
+                return Execute();
+            }
         }
 
         private HtmlValidateOptions CreateCliOptions(string formatter) =>

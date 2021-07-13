@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make `HtmlValidationOptions` `bool KeepHtmlFileWhenValid` property obsolete
   and replace it with new `HtmlSaveCondition SaveHtmlToFile` property.
 - Upgrade `Atata.Cli.HtmlValidate` package to v1.1.0.
+- Improve logging of `HtmlValidator`.
 
 ## [1.0.0] - 2021-06-28
 
