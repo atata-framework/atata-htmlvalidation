@@ -108,11 +108,6 @@ namespace Atata.HtmlValidation
             }
         }
 
-        private static void EnsureCliIsInstalled() =>
-            new NpmCli()
-                .EnsureItIsInstalled()
-                .InstallIfMissing(HtmlValidateCli.Name, global: true);
-
         private static bool ShouldSaveHtmlFile(bool isValid, HtmlSaveCondition saveCondition)
         {
             switch (saveCondition)
@@ -127,6 +122,11 @@ namespace Atata.HtmlValidation
                     throw new InvalidEnumArgumentException(nameof(saveCondition), (int)saveCondition, typeof(HtmlSaveCondition));
             }
         }
+
+        private void EnsureCliIsInstalled() =>
+            new NpmCli()
+                .EnsureItIsInstalled()
+                .InstallIfMissing(HtmlValidateCli.Name, _options.RecommendedHtmlValidatePackageVersion, global: true);
 
         private void WriteToFile(string path, string contents)
         {
@@ -159,7 +159,7 @@ namespace Atata.HtmlValidation
             return AtataContext.Current is null
                 ? Execute()
                 : AtataContext.Current.Log.ExecuteSection(
-                    new LogSection("Execute html-validate CLI command", LogLevel.Trace),
+                    new LogSection($"Execute html-validate CLI command for {htmlFileName}", LogLevel.Trace),
                     Execute);
         }
 

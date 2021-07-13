@@ -101,6 +101,12 @@ namespace Atata.HtmlValidation
         public Encoding Encoding { get; set; }
 
         /// <summary>
+        /// Gets or sets the recommended version of "html-validate" NPM package to install when there is no an installed one.
+        /// The default value is <c>"5.x"</c>.
+        /// </summary>
+        public string RecommendedHtmlValidatePackageVersion { get; set; } = "5.x";
+
+        /// <summary>
         /// Clones this instance with executing the action that can change some properties of the copy.
         /// </summary>
         /// <param name="action">The action.</param>

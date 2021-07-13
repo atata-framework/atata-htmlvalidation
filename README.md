@@ -187,6 +187,9 @@ if (!result.IsSuccessful)
   Gets or sets the encoding to use.
   The default value is `null`,
   which means that default encoding should be used.
+- **`string RecommendedHtmlValidatePackageVersion`**\
+  Gets or sets the recommended version of "html-validate" NPM package to install when there is no an installed one.
+  The default value is `"5.x"`.
 
 ### Configure Default Options
 

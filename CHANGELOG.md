@@ -9,7 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add `MoveFilesToDirectory` method to `HtmlValidationResult`.
+- Add method to `HtmlValidationResult`:
+  ```cs
+  public HtmlValidationResult MoveFilesToDirectory(string directory);
+  ```
+- Add property to `HtmlValidationOptions`:
+  ```cs
+  public string RecommendedHtmlValidatePackageVersion { get; set; } = "5.x";
+  ```
 
 ### Changed
 
