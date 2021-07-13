@@ -75,10 +75,23 @@ namespace Atata.HtmlValidation
         public bool SaveResultToFile { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating the condition of HTML file saving.
+        /// The default value is <see cref="HtmlSaveCondition.Invalid"/>,
+        /// meaning that HTML file should be saved only when it is not valid.
+        /// Other available options are: <see cref="HtmlSaveCondition.Never"/> and <see cref="HtmlSaveCondition.Always"/>.
+        /// </summary>
+        public HtmlSaveCondition SaveHtmlToFile { get; set; } = HtmlSaveCondition.Invalid;
+
+        /// <summary>
         /// Gets or sets a value indicating whether to keep HTML file when it is valid.
         /// The default value is <see langword="false"/>.
         /// </summary>
-        public bool KeepHtmlFileWhenValid { get; set; }
+        [Obsolete("Use " + nameof(SaveHtmlToFile) + " instead.")] // Obsolete since v1.1.0.
+        public bool KeepHtmlFileWhenValid
+        {
+            get => SaveHtmlToFile == HtmlSaveCondition.Always;
+            set => SaveHtmlToFile = value ? HtmlSaveCondition.Always : HtmlSaveCondition.Invalid;
+        }
 
         /// <summary>
         /// Gets or sets the encoding to use.

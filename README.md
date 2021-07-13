@@ -178,9 +178,11 @@ if (!result.IsSuccessful)
 - **`bool SaveResultToFile`**\
   Gets or sets a value indicating whether to save validation result output to file.
   The default value is `true`.
-- **`bool KeepHtmlFileWhenValid`**\
-  Gets or sets a value indicating whether to keep HTML file when it is valid.
-  The default value is `false`.
+- **`HtmlSaveCondition SaveHtmlToFile`**\
+  Gets or sets a value indicating the condition of HTML file saving.
+  The default value is `HtmlSaveCondition.Invalid`,
+  meaning that HTML file should be saved only when it is not valid.
+  Other available options are: `HtmlSaveCondition.Never` and `HtmlSaveCondition.Always`.
 - **`Encoding Encoding`**\
   Gets or sets the encoding to use.
   The default value is `null`,

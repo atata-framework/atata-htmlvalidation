@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using Atata.Cli;
@@ -68,7 +69,7 @@ namespace Atata.HtmlValidation
                 AtataContext.Current?.Log.Info($"HTML validation report saved to file \"{resultFilePath}\"");
             }
 
-            if (result.IsSuccessful && !_options.KeepHtmlFileWhenValid)
+            if (!ShouldSaveHtmlFile(result.IsSuccessful, _options.SaveHtmlToFile))
             {
                 File.Delete(htmlFilePath);
                 htmlFilePath = null;
@@ -111,6 +112,21 @@ namespace Atata.HtmlValidation
             new NpmCli()
                 .EnsureItIsInstalled()
                 .InstallIfMissing(HtmlValidateCli.Name, global: true);
+
+        private static bool ShouldSaveHtmlFile(bool isValid, HtmlSaveCondition saveCondition)
+        {
+            switch (saveCondition)
+            {
+                case HtmlSaveCondition.Never:
+                    return false;
+                case HtmlSaveCondition.Invalid:
+                    return !isValid;
+                case HtmlSaveCondition.Always:
+                    return true;
+                default:
+                    throw new InvalidEnumArgumentException(nameof(saveCondition), (int)saveCondition, typeof(HtmlSaveCondition));
+            }
+        }
 
         private void WriteToFile(string path, string contents)
         {
