@@ -59,7 +59,7 @@ as well as NPM itself, to be installed.
 By default, when `html-validate` package is missing,
 the library automatically tries to install the package,
 but in case of permissions lack, installation can fail.
-Therefore, it is recommended to preinstall `html-validate` package using NPM command:
+Therefore, it is recommended when possible to preinstall `html-validate` package using NPM command:
 
 ```
 npm install -g html-validate
@@ -187,9 +187,11 @@ if (!result.IsSuccessful)
   Gets or sets the encoding to use.
   The default value is `null`,
   which means that default encoding should be used.
-- **`string RecommendedHtmlValidatePackageVersion`**\
-  Gets or sets the recommended version of "html-validate" NPM package to install when there is no an installed one.
-  The default value is `"5.x"`.
+- **`string HtmlValidatePackageVersion`**\
+  Gets or sets the required version of "html-validate" NPM package.
+  The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
+  The default value is `"5.1.1"`.
+  Set `null` to disable the version check and use any pre-installed version.
 
 ### Configure Default Options
 

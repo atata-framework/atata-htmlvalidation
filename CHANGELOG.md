@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Upgrade `Atata.Cli.HtmlValidate` package to v1.2.0.
+- Replace `RecommendedHtmlValidatePackageVersion` property of `HtmlValidationOptions` with new `HtmlValidatePackageVersion`.
 
 ## [1.1.0] - 2021-07-14
 

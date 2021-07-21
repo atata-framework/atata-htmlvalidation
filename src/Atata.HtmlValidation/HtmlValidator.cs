@@ -2,9 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
-using Atata.Cli;
 using Atata.Cli.HtmlValidate;
-using Atata.Cli.Npm;
 
 namespace Atata.HtmlValidation
 {
@@ -15,6 +13,10 @@ namespace Atata.HtmlValidation
     /// </summary>
     public class HtmlValidator
     {
+        private static readonly object s_cliInstallationSyncObject = new object();
+
+        private static string s_installedCliVersion;
+
         private readonly HtmlValidationOptions _options;
 
         /// <summary>
@@ -50,6 +52,8 @@ namespace Atata.HtmlValidation
 
             WriteToFile(htmlFilePath, html);
             AtataContext.Current?.Log.Trace($"HTML saved to file \"{htmlFilePath}\"");
+
+            EnsureCliIsInstalled(_options.HtmlValidatePackageVersion);
 
             var result = ExecuteCliCommand(workingDirectory, htmlFileName, _options.OutputFormatter);
             string resultFilePath = null;
@@ -136,17 +140,22 @@ namespace Atata.HtmlValidation
                 ? function.Invoke()
                 : AtataContext.Current.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), function);
 
-        private void EnsureCliIsInstalled()
+        public static void EnsureCliIsInstalled(string version)
         {
-            NpmCli npmCli = new NpmCli();
+            if (version != null && version != s_installedCliVersion)
+            {
+                lock (s_cliInstallationSyncObject)
+                {
+                    if (version != s_installedCliVersion)
+                    {
+                        ExecuteAction(
+                            $"Check {HtmlValidateCli.Name} NPM package installed version to be {version} and install it in case it's not installed",
+                            () => new HtmlValidateCli().RequireVersion(version));
 
-            ExecuteAction(
-                "Ensure NPM is installed",
-                () => npmCli.EnsureItIsInstalled());
-
-            ExecuteAction(
-                $"Install {HtmlValidateCli.Name} NPM package if missing",
-                () => npmCli.InstallIfMissing(HtmlValidateCli.Name, _options.RecommendedHtmlValidatePackageVersion, global: true));
+                        s_installedCliVersion = version;
+                    }
+                }
+            }
         }
 
         private void WriteToFile(string path, string contents)
@@ -164,20 +173,9 @@ namespace Atata.HtmlValidation
             var cli = HtmlValidateCli.InDirectory(workingDirectory);
             cli.Encoding = _options.Encoding;
 
-            HtmlValidateResult Execute() =>
-                ExecuteFunction(
-                    $"Execute html-validate CLI command for \"{htmlFileName}\" with \"{cliOptions.Formatter.Name}\" formatter",
-                    () => cli.Validate(htmlFileName, cliOptions));
-
-            try
-            {
-                return Execute();
-            }
-            catch (CliCommandException)
-            {
-                EnsureCliIsInstalled();
-                return Execute();
-            }
+            return ExecuteFunction(
+                $"Execute html-validate CLI command for \"{htmlFileName}\" with \"{cliOptions.Formatter.Name}\" formatter",
+                () => cli.Validate(htmlFileName, cliOptions));
         }
 
         private HtmlValidateOptions CreateCliOptions(string formatter) =>
