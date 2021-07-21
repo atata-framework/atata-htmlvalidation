@@ -18,6 +18,7 @@
 - [Usage](#usage)
   - [Using ValidateHtml Extension Method](#using-validatehtml-extension-method) 
   - [Using HtmlValidator](#using-htmlvalidator)
+- [Sample Project](#sample-project)
 - [HtmlValidationOptions Properties](#htmlvalidationoptions-properties)
 - [HtmlValidationResult Members](#htmlvalidationresult-members)
 - [Configuration](#configuration)
@@ -144,6 +145,11 @@ if (!result.IsSuccessful)
     // TODO: Handle validation failure case.
 }
 ```
+
+## Sample Project
+
+Check out [atata-framework/atata-sample-app-tests](https://github.com/atata-framework/atata-sample-app-tests) repository, which contains [`HtmlPageValidationTests`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/HtmlPageValidationTests.cs) test class that validates HTML of some pages.
+It also contains a sample [`.htmlvalidate.json`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/.htmlvalidate.json) configuration file.
 
 ## HtmlValidationOptions Properties
 
