@@ -36,7 +36,7 @@ namespace Atata
             where TPageObject : PageObject<TPageObject>
         {
             AtataContext.Current.Log.ExecuteSection(
-                new LogSection($"Validate: HTML document of {pageObject.ComponentFullName}"),
+                new LogSection($"Validate: {pageObject.ComponentFullName} HTML document"),
                 () =>
                 {
                     string html = null;
@@ -46,6 +46,7 @@ namespace Atata
                         () => { html = pageObject.PageSource; });
 
                     Validate(
+                        pageObject.ComponentFullName,
                         html,
                         options ?? HtmlValidationOptions.Default ?? new HtmlValidationOptions(),
                         asWarning);
@@ -54,7 +55,7 @@ namespace Atata
             return pageObject;
         }
 
-        private static void Validate(string html, HtmlValidationOptions options, bool asWarning = false)
+        private static void Validate(string pageObjectFullName, string html, HtmlValidationOptions options, bool asWarning)
         {
             HtmlValidator validator = new HtmlValidator(
                 options ?? HtmlValidationOptions.Default ?? new HtmlValidationOptions());
@@ -63,7 +64,7 @@ namespace Atata
 
             if (!validationResult.IsSuccessful)
             {
-                string errorMessage = $"HTML document content, which contains errors:{Environment.NewLine}{validationResult.Output}";
+                string errorMessage = $"{pageObjectFullName} HTML document, which contains errors:{Environment.NewLine}{validationResult.Output}";
 
                 IVerificationStrategy verificationStrategy = asWarning
                     ? (IVerificationStrategy)new ExpectationVerificationStrategy()
