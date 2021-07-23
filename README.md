@@ -80,11 +80,16 @@ public static TPageObject ValidateHtml<TPageObject>(
     where TPageObject : PageObject<TPageObject>;
 ```
 
-Validates the HTML of current page.
+The method validates the HTML of current page.
 Relies on `HtmlValidator` class
 that uses "html-validate" NPM package to execute HTML validation.
-If "html-validate" package is not installed, tries to install it.
-If `asWarning` argument is set to `true`, instead of assertion exception produces warning.
+
+Before the execution of validation, the check of installed "html-validate" package version performs.
+The required package version is defined in `HtmlValidatePackageVersion` property of `options`.
+The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
+
+By default, when validation fails, throws an assertion exception with a message containing a list of HTML errors.
+Produces a warning instead of assertion exception if `asWarning` argument is set to `true`.
 
 #### Validate by Default
 
@@ -127,7 +132,7 @@ This approach is a bit low-level one.
 Can be used without active `AtataContext`.
 
 `HtmlValidator` - uses "html-validate" NPM package to execute HTML validation.
-If "html-validate" package is not installed, tries to install it.
+If required version of "html-validate" package is not installed, installs it.
 
 ```cs
 HtmlValidator validator = new HtmlValidator(

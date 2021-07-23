@@ -9,10 +9,20 @@ namespace Atata
     public static class PageObjectHtmlValidateExtensions
     {
         /// <summary>
+        /// <para>
         /// Validates the HTML of current page.
         /// Relies on <see cref="HtmlValidator"/> class
         /// that uses "html-validate" NPM package to execute HTML validation.
-        /// If "html-validate" package is not installed, tries to install it.
+        /// </para>
+        /// <para>
+        /// Before the execution of validation, the check of installed "html-validate" package version performs.
+        /// The required package version is defined in <see cref="HtmlValidationOptions.HtmlValidatePackageVersion"/> property of <paramref name="options"/>.
+        /// The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
+        /// </para>
+        /// <para>
+        /// By default, when validation fails, throws an assertion exception with a message containing a list of HTML errors.
+        /// Produces a warning instead of assertion exception if <paramref name="asWarning"/> argument is set to <see langword="true"/>.
+        /// </para>
         /// </summary>
         /// <typeparam name="TPageObject">The type of the page object.</typeparam>
         /// <param name="pageObject">The page object.</param>

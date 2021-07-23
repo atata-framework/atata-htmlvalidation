@@ -9,7 +9,7 @@ namespace Atata.HtmlValidation
     /// <summary>
     /// Represents the HTML validator.
     /// Uses "html-validate" NPM package to execute HTML validation.
-    /// If "html-validate" package is not installed, tries to install it.
+    /// If required version of "html-validate" package is not installed, installs it.
     /// </summary>
     public class HtmlValidator
     {
@@ -39,7 +39,15 @@ namespace Atata.HtmlValidation
         }
 
         /// <summary>
+        /// <para>
         /// Validates the specified HTML content.
+        /// </para>
+        /// <para>
+        /// Before the execution of validation, the check of installed "html-validate" package version performs.
+        /// The required package version is defined in <see cref="HtmlValidationOptions.HtmlValidatePackageVersion"/> property of
+        /// <c>options</c> that can be passed into the constructor.
+        /// The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
+        /// </para>
         /// </summary>
         /// <param name="html">The HTML content.</param>
         /// <returns>The validation result.</returns>
