@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add `ComponentFullName` of page object to error message in `PageObjectHtmlValidateExtensions.ValidateHtml` method.
 - Reformat main log message in `PageObjectHtmlValidateExtensions.ValidateHtml` method.
+- Upgrade `Atata.Cli.HtmlValidate` package to v1.3.0.
 
 ## [1.2.0] - 2021-07-21
 
