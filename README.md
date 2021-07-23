@@ -17,6 +17,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Using ValidateHtml Extension Method](#using-validatehtml-extension-method) 
+  - [Using ValidateHtmlAttribute Trigger](#using-validatehtmlattribute-trigger)
   - [Using HtmlValidator](#using-htmlvalidator)
 - [Sample Project](#sample-project)
 - [HtmlValidationOptions Properties](#htmlvalidationoptions-properties)
@@ -124,6 +125,31 @@ Go.To<OrdinaryPage>(url: "some/url")
 ```cs
 Go.To<OrdinaryPage>(url: "some/url")
     .ValidateHtml(HtmlValidationOptions.Default.CloneWith(x => x.ConfigPath = "another/config.json"));
+```
+
+### Using ValidateHtmlAttribute Trigger
+
+`ValidateHtmlAttribute` - the trigger attribute that indicates that the page HTML should be validated on the specified event.
+By default occurs upon the page object initialization.
+Invokes `ValidateHtml` method using `HtmlValidationOptions.Default` options.
+
+Has `public bool AsWarning { get; set; }` property that gets or sets a value indicating whether to produce a warning instead of assertion exception on validation failure.
+The default value is `false`.
+
+#### Apply to Certain Page Object
+
+```cs
+[ValidateHtml]
+public class SomePage : Page<_>
+{
+}
+```
+
+#### Apply to All Page Objects
+
+```cs
+AtataContext.GlobalConfiguration
+    .Attributes.Global.Add(new ValidateHtmlAttribute { TargetType = typeof(PageObject<>) });
 ```
 
 ### Using HtmlValidator

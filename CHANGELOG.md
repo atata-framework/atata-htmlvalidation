@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Add `ValidateHtmlAttribute` trigger attribute.
+
 ### Changed
 
 - Add `ComponentFullName` of page object to error message in `PageObjectHtmlValidateExtensions.ValidateHtml` method.
