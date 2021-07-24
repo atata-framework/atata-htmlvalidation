@@ -1,4 +1,4 @@
-# Atata.HtmlValidation
+﻿# Atata.HtmlValidation
 
 [![NuGet](http://img.shields.io/nuget/v/Atata.HtmlValidation.svg?style=flat)](https://www.nuget.org/packages/Atata.HtmlValidation/)
 [![GitHub release](https://img.shields.io/github/release/atata-framework/atata-htmlvalidation.svg)](https://github.com/atata-framework/atata-htmlvalidation/releases)
@@ -19,10 +19,14 @@
   - [Using ValidateHtml Extension Method](#using-validatehtml-extension-method) 
   - [Using ValidateHtmlAttribute Trigger](#using-validatehtmlattribute-trigger)
   - [Using HtmlValidator](#using-htmlvalidator)
-- [Sample Project](#sample-project)
+- [Configuration](#configuration)
 - [HtmlValidationOptions Properties](#htmlvalidationoptions-properties)
 - [HtmlValidationResult Members](#htmlvalidationresult-members)
-- [Configuration](#configuration)
+- [Validation Results](#validation-results)
+  - [Exception](#exception)
+  - [Result File](#result-file)
+  - [Log](#log)
+- [Sample Project](#sample-project)
 - [Feedback](#feedback)
 - [Thanks](#thanks)
 - [SemVer](#semver)
@@ -177,10 +181,13 @@ if (!result.IsSuccessful)
 }
 ```
 
-## Sample Project
+## Configuration
 
-Check out [atata-framework/atata-sample-app-tests](https://github.com/atata-framework/atata-sample-app-tests) repository, which contains [`HtmlPageValidationTests`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/HtmlPageValidationTests.cs) test class that validates HTML of some pages.
-It also contains a sample [`.htmlvalidate.json`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/.htmlvalidate.json) configuration file.
+Check out [html-validate Configuration](https://html-validate.org/usage/index.html#configuration)
+documentation page on how to create config files.
+
+Mostly, you can create standard `.htmlvalidate.json` file in the root of a test project with
+"Copy to Output Directory" property set to "Copy if newer".
 
 ## HtmlValidationOptions Properties
 
@@ -227,7 +234,7 @@ It also contains a sample [`.htmlvalidate.json`](https://github.com/atata-framew
 - **`string HtmlValidatePackageVersion`**\
   Gets or sets the required version of "html-validate" NPM package.
   The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
-  The default value is `"5.1.1"`.
+  The default value is `"5.2.0"`.
   Set `null` to disable the version check and use any pre-installed version.
 
 ### Configure Default Options
@@ -269,10 +276,100 @@ HtmlValidationOptions.Default = new HtmlValidationOptions
 - **`HtmlValidationResult MoveFilesToDirectory(string directory)`**\
   Moves the HTML and result files to another directory.
 
-## Configuration
+## Validation Results
 
-Check out [html-validate Configuration](https://html-validate.org/usage/index.html#configuration)
-documentation page on how to create config files.
+The results of failed validation using `ValidateHtml` method can be found in few places.
+
+Additionally original HTML snapshot, which was validated, is saved to Atata Artifacts directory as a file.
+
+### Exception
+
+An `AssertionException` is thrown with the message similar to:
+
+```
+Wrong "<app>" page HTML document, which contains errors:
+785a0e99-359a-4905-b490-3a62c61fbf37.html
+  69:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  70:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  71:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  72:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  81:26  error  <button> is missing required "type" attribute  element-required-attributes
+  82:26  error  <button> is missing required "type" attribute  element-required-attributes
+  83:26  error  <button> is missing required "type" attribute  element-required-attributes
+
+✖ 7 problems (7 errors, 0 warnings)
+
+More information:
+  https://html-validate.org/rules/element-required-attributes.html
+```
+
+### Result File
+
+By default, the result file that is saved to Atata Artifacts directory is generated using "codeframe" formatter,
+which provides nice detailed report.
+
+```
+error: <th> is missing required "scope" attribute (element-required-attributes) at 785a0e99-359a-4905-b490-3a62c61fbf37.html:69:22:
+  67 |             <thead>
+  68 |                 <tr>
+> 69 |                     <th>Name</th>
+     |                      ^^
+  70 |                     <th>Price</th>
+  71 |                     <th>Amount</th>
+  72 |                     <th></th>
+Details: https://html-validate.org/rules/element-required-attributes.html
+
+
+error: <th> is missing required "scope" attribute (element-required-attributes) at 785a0e99-359a-4905-b490-3a62c61fbf37.html:70:22:
+  68 |                 <tr>
+  69 |                     <th>Name</th>
+> 70 |                     <th>Price</th>
+     |                      ^^
+  71 |                     <th>Amount</th>
+  72 |                     <th></th>
+  73 |                 </tr>
+Details: https://html-validate.org/rules/element-required-attributes.html
+
+...
+```
+
+### Log
+
+Additional details of validation execution can be found in Atata log.
+
+```
+...
+2021-07-23 19:06:22.7088  INFO > Validate: "<app>" page HTML document
+2021-07-23 19:06:22.7102 TRACE - > Get page source HTML
+2021-07-23 19:06:22.7319 TRACE - < Get page source HTML (0.021s)
+2021-07-23 19:06:22.7434 TRACE - HTML saved to file "D:\Development\atata-sample-app-tests\test\AtataSampleApp.UITests\bin\Debug\netcoreapp3.1\artifacts\2021-07-23 19_05_57\HtmlPageValidationTests\Validate(products)\785a0e99-359a-4905-b490-3a62c61fbf37.html"
+2021-07-23 19:06:23.3315 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter
+2021-07-23 19:06:24.2595 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter (0.927s) >> { IsSuccessful = False }
+2021-07-23 19:06:24.2615 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter
+2021-07-23 19:06:25.1164 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter (0.854s) >> { IsSuccessful = False }
+2021-07-23 19:06:25.1203  INFO - HTML validation report saved to file "D:\Development\atata-sample-app-tests\test\AtataSampleApp.UITests\bin\Debug\netcoreapp3.1\artifacts\2021-07-23 19_05_57\HtmlPageValidationTests\Validate(products)\785a0e99-359a-4905-b490-3a62c61fbf37.txt"
+2021-07-23 19:06:31.4848  INFO < Validate: "<app>" page HTML document (8.775s) >> NUnit.Framework.AssertionException: Wrong "<app>" page HTML document, which contains errors...
+2021-07-23 19:06:31.5586 ERROR Wrong "<app>" page HTML document, which contains errors:
+785a0e99-359a-4905-b490-3a62c61fbf37.html
+  69:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  70:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  71:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  72:22  error  <th> is missing required "scope" attribute     element-required-attributes
+  81:26  error  <button> is missing required "type" attribute  element-required-attributes
+  82:26  error  <button> is missing required "type" attribute  element-required-attributes
+  83:26  error  <button> is missing required "type" attribute  element-required-attributes
+
+✖ 7 problems (7 errors, 0 warnings)
+
+More information:
+  https://html-validate.org/rules/element-required-attributes.html
+...
+```
+
+## Sample Project
+
+Check out [atata-framework/atata-sample-app-tests](https://github.com/atata-framework/atata-sample-app-tests) repository, which contains [`HtmlPageValidationTests`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/HtmlPageValidationTests.cs) test class that validates HTML of some pages.
+It also contains a sample [`.htmlvalidate.json`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/.htmlvalidate.json) configuration file.
 
 ## Feedback
 
