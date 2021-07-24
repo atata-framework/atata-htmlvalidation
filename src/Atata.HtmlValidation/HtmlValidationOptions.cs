@@ -117,7 +117,7 @@ namespace Atata.HtmlValidation
         /// The default value is <c>"5.1.1"</c>.
         /// Set <see langword="null"/> to disable the version check and use any pre-installed version.
         /// </summary>
-        public string HtmlValidatePackageVersion { get; set; } = "5.1.1";
+        public string HtmlValidatePackageVersion { get; set; } = "5.2.0";
 
         /// <summary>
         /// Clones this instance with executing the action that can change some properties of the copy.
