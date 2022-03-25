@@ -23,7 +23,7 @@ Features:
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atata" Version="1.11.2" />
+    <PackageReference Include="Atata" Version="1.14.0" />
     <PackageReference Include="Atata.Cli.HtmlValidate" Version="1.4.0" />
   </ItemGroup>
 
