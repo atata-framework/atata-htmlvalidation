@@ -181,6 +181,9 @@ namespace Atata.HtmlValidation
             var cli = HtmlValidateCli.InDirectory(workingDirectory);
             cli.Encoding = _options.Encoding;
 
+            if (_options.CliCommandFactory != null)
+                cli.CliCommandFactory = _options.CliCommandFactory;
+
             return ExecuteFunction(
                 $"Execute html-validate CLI command for \"{htmlFileName}\" with \"{cliOptions.Formatter.Name}\" formatter",
                 () => cli.Validate(htmlFileName, cliOptions));

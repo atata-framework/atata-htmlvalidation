@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `public ICliCommandFactory CliCommandFactory { get; set; }` property to `HtmlValidationOptions`.
+
 ### Changed
 
 - Upgrade `Atata.Cli.HtmlValidate` package to v1.4.0.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Atata.Cli;
 using Atata.Cli.HtmlValidate;
 
 namespace Atata.HtmlValidation
@@ -99,6 +100,14 @@ namespace Atata.HtmlValidation
         /// which means that default encoding should be used.
         /// </summary>
         public Encoding Encoding { get; set; }
+
+        /// <summary>
+        /// Gets or sets the CLI command factory.
+        /// The default value is <see langword="null"/>,
+        /// which means that default CLI command factory should be used,
+        /// which is <see cref="ProgramCli.DefaultShellCliCommandFactory"/>.
+        /// </summary>
+        public ICliCommandFactory CliCommandFactory { get; set; }
 
         /// <summary>
         /// Gets or sets the recommended version of "html-validate" NPM package to install.
