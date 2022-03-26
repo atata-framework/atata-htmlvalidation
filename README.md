@@ -231,6 +231,11 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
   Gets or sets the encoding to use.
   The default value is `null`,
   which means that default encoding should be used.
+- **`ICliCommandFactory CliCommandFactory`**\
+  Gets or sets the CLI command factory.
+  The default value is `null`,
+  which means that default CLI command factory should be used,
+  which is `ProgramCli.DefaultShellCliCommandFactory`.
 - **`string HtmlValidatePackageVersion`**\
   Gets or sets the required version of "html-validate" NPM package.
   The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
