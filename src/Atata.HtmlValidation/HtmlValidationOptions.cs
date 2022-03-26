@@ -109,10 +109,6 @@ namespace Atata.HtmlValidation
         /// </summary>
         public ICliCommandFactory CliCommandFactory { get; set; }
 
-        /// <summary>
-        /// Gets or sets the recommended version of "html-validate" NPM package to install.
-        /// The default value is <c>"5.1.1"</c>.
-        /// </summary>
         [Obsolete("Use " + nameof(HtmlValidatePackageVersion) + " instead.")] // Obsolete since v1.2.0.
         public string RecommendedHtmlValidatePackageVersion
         {
