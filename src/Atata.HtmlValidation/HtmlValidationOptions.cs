@@ -123,10 +123,10 @@ namespace Atata.HtmlValidation
         /// <summary>
         /// Gets or sets the required version of "html-validate" NPM package.
         /// The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
-        /// The default value is <c>"5.1.1"</c>.
+        /// The default value is <c>"5.5.0"</c>.
         /// Set <see langword="null"/> to disable the version check and use any pre-installed version.
         /// </summary>
-        public string HtmlValidatePackageVersion { get; set; } = "5.2.0";
+        public string HtmlValidatePackageVersion { get; set; } = "5.5.0";
 
         /// <summary>
         /// Clones this instance with executing the action that can change some properties of the copy.

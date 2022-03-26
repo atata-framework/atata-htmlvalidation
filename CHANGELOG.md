@@ -15,12 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Upgrade `Atata.Cli.HtmlValidate` package to v1.4.0.
 - Upgrade `Atata` package to v1.14.0.
+- Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"5.5.0"`.
 
 ## [1.4.0] - 2021-07-24
 
 ### Changed
 
-- Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `5.2.0`.
+- Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"5.2.0"`.
 
 ## [1.3.0] - 2021-07-23
 
