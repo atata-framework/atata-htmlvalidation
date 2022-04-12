@@ -24,7 +24,7 @@ Features:
 
   <ItemGroup>
     <PackageReference Include="Atata" Version="2.0.0-beta.3" />
-    <PackageReference Include="Atata.Cli.HtmlValidate" Version="1.4.0" />
+    <PackageReference Include="Atata.Cli.HtmlValidate" Version="2.0.0-beta.1" />
   </ItemGroup>
 
 </Project>
