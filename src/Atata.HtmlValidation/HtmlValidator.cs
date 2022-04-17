@@ -19,9 +19,11 @@ namespace Atata.HtmlValidation
 
         private readonly HtmlValidationOptions _options;
 
+        private readonly AtataContext _atataContext;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlValidator"/> class
-        /// using <see cref="HtmlValidationOptions.Default"/> options.
+        /// using <see cref="HtmlValidationOptions.Default"/> options and <see cref="AtataContext.Current"/>.
         /// </summary>
         public HtmlValidator()
             : this(HtmlValidationOptions.Default)
@@ -29,13 +31,48 @@ namespace Atata.HtmlValidation
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlValidator" /> class
+        /// using <see cref="HtmlValidationOptions.Default" /> options and the specified <paramref name="atataContext" />.
+        /// </summary>
+        /// <param name="atataContext">The context, which can be <see langword="null"/>.</param>
+        public HtmlValidator(AtataContext atataContext)
+            : this(HtmlValidationOptions.Default, atataContext)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="HtmlValidator"/> class
-        /// with the specified options.
+        /// with the specified <paramref name="options"/> and using <see cref="AtataContext.Current"/>.
         /// </summary>
         /// <param name="options">The options.</param>
         public HtmlValidator(HtmlValidationOptions options)
+            : this(options, AtataContext.Current)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlValidator"/> class.
+        /// with the specified <paramref name="options"/> and <paramref name="atataContext"/>.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <param name="atataContext">The context, which can be <see langword="null"/>.</param>
+        public HtmlValidator(HtmlValidationOptions options, AtataContext atataContext)
         {
             _options = options.CheckNotNull(nameof(options));
+            _atataContext = atataContext;
+        }
+
+        /// <summary>
+        /// Ensures the "html-validate" CLI is installed with the specified <paramref name="version"/>.
+        /// </summary>
+        /// <param name="version">The version.</param>
+        public static void EnsureCliIsInstalled(string version)
+        {
+            version.CheckNotNullOrWhitespace(nameof(version));
+
+            var options = HtmlValidationOptions.Default.CloneWith(x => x.HtmlValidatePackageVersion = version);
+            var validator = new HtmlValidator(options);
+            validator.EnsureCliIsInstalled();
         }
 
         /// <summary>
@@ -59,9 +96,9 @@ namespace Atata.HtmlValidation
             string htmlFilePath = Path.Combine(workingDirectory, htmlFileName);
 
             WriteToFile(htmlFilePath, html);
-            AtataContext.Current?.Log.Trace($"HTML saved to file \"{htmlFilePath}\"");
+            _atataContext?.Log.Trace($"HTML saved to file \"{htmlFilePath}\"");
 
-            EnsureCliIsInstalled(_options.HtmlValidatePackageVersion);
+            EnsureCliIsInstalled();
 
             var result = ExecuteCliCommand(workingDirectory, htmlFileName, _options.OutputFormatter);
             string resultFilePath = null;
@@ -78,7 +115,7 @@ namespace Atata.HtmlValidation
                     : ExecuteCliCommand(workingDirectory, htmlFileName, _options.ResultFileFormatter).Output;
 
                 WriteToFile(resultFilePath, resultFileOutput);
-                AtataContext.Current?.Log.Info($"HTML validation report saved to file \"{resultFilePath}\"");
+                _atataContext?.Log.Info($"HTML validation report saved to file \"{resultFilePath}\"");
             }
 
             if (!ShouldSaveHtmlFile(result.IsSuccessful, _options.SaveHtmlToFile))
@@ -93,19 +130,6 @@ namespace Atata.HtmlValidation
         /// <inheritdoc cref="Validate(string)"/>
         public async Task<HtmlValidationResult> ValidateAsync(string html) =>
             await Task.Run(() => Validate(html));
-
-        private static string ResolveWorkingDirectory(HtmlValidationOptions settings)
-        {
-            string workingDirectory = settings.WorkingDirectoryBuilder?.Invoke()
-                ?? AppDomain.CurrentDomain.BaseDirectory;
-
-            workingDirectory = AtataContext.Current?.FillTemplateString(workingDirectory) ?? workingDirectory;
-
-            if (!Directory.Exists(workingDirectory))
-                Directory.CreateDirectory(workingDirectory);
-
-            return workingDirectory;
-        }
 
         private static string ResolveFormatterFileExtension(string formatter)
         {
@@ -135,21 +159,36 @@ namespace Atata.HtmlValidation
             }
         }
 
-        private static void ExecuteAction(string sectionMessage, Action action)
+        private string ResolveWorkingDirectory(HtmlValidationOptions settings)
         {
-            if (AtataContext.Current is null)
-                action.Invoke();
-            else
-                AtataContext.Current.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), action);
+            string workingDirectory = settings.WorkingDirectoryBuilder?.Invoke(_atataContext)
+                ?? AppDomain.CurrentDomain.BaseDirectory;
+
+            workingDirectory = _atataContext?.FillTemplateString(workingDirectory) ?? workingDirectory;
+
+            if (!Directory.Exists(workingDirectory))
+                Directory.CreateDirectory(workingDirectory);
+
+            return workingDirectory;
         }
 
-        private static TResult ExecuteFunction<TResult>(string sectionMessage, Func<TResult> function) =>
-            AtataContext.Current is null
-                ? function.Invoke()
-                : AtataContext.Current.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), function);
-
-        public static void EnsureCliIsInstalled(string version)
+        private void ExecuteAction(string sectionMessage, Action action)
         {
+            if (_atataContext is null)
+                action.Invoke();
+            else
+                _atataContext.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), action);
+        }
+
+        private TResult ExecuteFunction<TResult>(string sectionMessage, Func<TResult> function) =>
+            _atataContext is null
+                ? function.Invoke()
+                : _atataContext.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), function);
+
+        private void EnsureCliIsInstalled()
+        {
+            string version = _options.HtmlValidatePackageVersion;
+
             if (version != null && version != s_installedCliVersion)
             {
                 lock (s_cliInstallationSyncObject)

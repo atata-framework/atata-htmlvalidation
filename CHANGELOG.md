@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
+### Added
+- Add optional `AtataContext atataContext` parameter to `HtmlValidator` constructor.
 
+### Changed
 - Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"6.7.1"`.
+- Get rid of `AtataContext.Current` usages.
+- Change `HtmlValidationOptions.WorkingDirectoryBuilder` property type from `Func<string>` to `Func<AtataContext, string>`.
 
 ## [1.5.0] - 2022-03-26
 

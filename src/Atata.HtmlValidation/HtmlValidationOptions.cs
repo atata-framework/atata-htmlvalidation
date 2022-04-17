@@ -18,22 +18,20 @@ namespace Atata.HtmlValidation
         /// <summary>
         /// Gets or sets the working directory builder.
         /// HTML and result files should be saved in working directory.
-        /// The default builder returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>
-        /// or `AppDomain.CurrentDomain.BaseDirectory` if <see cref="AtataContext.Current"/> is <see langword="null"/>.
+        /// The default builder returns the directory of <see cref="AtataContext.Artifacts"/> property of <see cref="AtataContext"/> argument
+        /// or <c>AppDomain.CurrentDomain.BaseDirectory</c> if <see cref="AtataContext"/> argument is <see langword="null"/>.
         /// </summary>
-        public Func<string> WorkingDirectoryBuilder { get; set; } =
-            () => AtataContext.Current?.Artifacts.FullName ?? AppDomain.CurrentDomain.BaseDirectory;
+        public Func<AtataContext, string> WorkingDirectoryBuilder { get; set; } =
+            x => x?.Artifacts.FullName ?? AppDomain.CurrentDomain.BaseDirectory;
 
         /// <summary>
         /// Gets or sets the working directory where HTML and result files should be saved.
         /// Gets and sets the value from/to <see cref="WorkingDirectoryBuilder"/> property.
-        /// By default, returns the directory of <see cref="AtataContext.Artifacts"/> of <see cref="AtataContext.Current"/>
-        /// or `AppDomain.CurrentDomain.BaseDirectory` if <see cref="AtataContext.Current"/> is <see langword="null"/>.
         /// </summary>
         public string WorkingDirectory
         {
-            get => WorkingDirectoryBuilder?.Invoke();
-            set => WorkingDirectoryBuilder = () => value;
+            get => WorkingDirectoryBuilder?.Invoke(null);
+            set => WorkingDirectoryBuilder = _ => value;
         }
 
         /// <summary>

@@ -35,18 +35,18 @@ namespace Atata
             bool asWarning = false)
             where TPageObject : PageObject<TPageObject>
         {
-            AtataContext.Current.Log.ExecuteSection(
+            pageObject.Context.Log.ExecuteSection(
                 new LogSection($"Validate: {pageObject.ComponentFullName} HTML document"),
                 () =>
                 {
                     string html = null;
 
-                    AtataContext.Current.Log.ExecuteSection(
+                    pageObject.Context.Log.ExecuteSection(
                         new LogSection("Get page source HTML", LogLevel.Trace),
                         () => { html = pageObject.PageSource; });
 
                     Validate(
-                        pageObject.ComponentFullName,
+                        pageObject,
                         html,
                         options ?? HtmlValidationOptions.Default ?? new HtmlValidationOptions(),
                         asWarning);
@@ -55,16 +55,17 @@ namespace Atata
             return pageObject;
         }
 
-        private static void Validate(string pageObjectFullName, string html, HtmlValidationOptions options, bool asWarning)
+        private static void Validate(UIComponent pageObject, string html, HtmlValidationOptions options, bool asWarning)
         {
             HtmlValidator validator = new HtmlValidator(
-                options ?? HtmlValidationOptions.Default ?? new HtmlValidationOptions());
+                options ?? HtmlValidationOptions.Default ?? new HtmlValidationOptions(),
+                pageObject.Context);
 
             HtmlValidationResult validationResult = validator.Validate(html);
 
             if (!validationResult.IsSuccessful)
             {
-                string errorMessage = $"{pageObjectFullName} HTML document, which contains errors:{Environment.NewLine}{validationResult.Output}";
+                string errorMessage = $"{pageObject.ComponentFullName} HTML document, which contains errors:{Environment.NewLine}{validationResult.Output}";
 
                 IVerificationStrategy verificationStrategy = asWarning
                     ? (IVerificationStrategy)new ExpectationVerificationStrategy()
