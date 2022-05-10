@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"7.0.0"`.
 - Get rid of `AtataContext.Current` usages.
 - Change `HtmlValidationOptions.WorkingDirectoryBuilder` property type from `Func<string>` to `Func<AtataContext, string>`.
+- Upgrade Atata.Cli.HtmlValidate package to v2.0.0.
 
 ## [1.5.0] - 2022-03-26
 
@@ -23,8 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Upgrade `Atata.Cli.HtmlValidate` package to v1.4.0.
-- Upgrade `Atata` package to v1.14.0.
+- Upgrade Atata.Cli.HtmlValidate package to v1.4.0.
+- Upgrade Atata package to v1.14.0.
 - Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"5.5.0"`.
 
 ## [1.4.0] - 2021-07-24
@@ -43,13 +44,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add `ComponentFullName` of page object to error message in `PageObjectHtmlValidateExtensions.ValidateHtml` method.
 - Reformat main log message in `PageObjectHtmlValidateExtensions.ValidateHtml` method.
-- Upgrade `Atata.Cli.HtmlValidate` package to v1.3.0.
+- Upgrade Atata.Cli.HtmlValidate package to v1.3.0.
 
 ## [1.2.0] - 2021-07-21
 
 ### Changed
 
-- Upgrade `Atata.Cli.HtmlValidate` package to v1.2.0.
+- Upgrade Atata.Cli.HtmlValidate package to v1.2.0.
 - Replace `RecommendedHtmlValidatePackageVersion` property of `HtmlValidationOptions` with new `HtmlValidatePackageVersion`.
 
 ## [1.1.0] - 2021-07-14
@@ -69,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Make `HtmlValidationOptions` `bool KeepHtmlFileWhenValid` property obsolete
   and replace it with new `HtmlSaveCondition SaveHtmlToFile` property.
-- Upgrade `Atata.Cli.HtmlValidate` package to v1.1.0.
+- Upgrade Atata.Cli.HtmlValidate package to v1.1.0.
 - Improve logging of `HtmlValidator`.
 
 ## [1.0.0] - 2021-06-28
