@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Get rid of `AtataContext.Current` usages.
 - Change `HtmlValidationOptions.WorkingDirectoryBuilder` property type from `Func<string>` to `Func<AtataContext, string>`.
 - Upgrade Atata.Cli.HtmlValidate package to v2.0.0.
+- Upgrade Atata package to v2.0.0.
 
 ## [1.5.0] - 2022-03-26
 
