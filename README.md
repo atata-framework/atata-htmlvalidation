@@ -193,11 +193,11 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
 
 - **`static HtmlValidationOptions Default { get; set; }`**\
   Gets or sets the default options.
-- **`Func<string> WorkingDirectoryBuilder { get; set; }`**\
+- **`Func<AtataContext, string> WorkingDirectoryBuilder { get; set; }`**\
   Gets or sets the working directory builder.
   HTML and result files should be saved in working directory.
-  The default builder returns the directory of `Artifacts` of `AtataContext.Current`
-  or `AppDomain.CurrentDomain.BaseDirectory` if `AtataContext.Current` is `null`.
+  The default builder returns the directory of `Artifacts` property of `AtataContext` argument
+  or `AppDomain.CurrentDomain.BaseDirectory` if `AtataContext` argument is `null`.
 - **`string WorkingDirectory { get; set; }`**\
   Gets or sets the working directory where HTML and result files should be saved.
   Gets and sets the value from/to `WorkingDirectoryBuilder` property.
@@ -239,7 +239,7 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
 - **`string HtmlValidatePackageVersion`**\
   Gets or sets the required version of "html-validate" NPM package.
   The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
-  The default value is `"5.5.0"`.
+  The default value is `"7.0.0"`.
   Set `null` to disable the version check and use any pre-installed version.
 
 ### Configure Default Options
