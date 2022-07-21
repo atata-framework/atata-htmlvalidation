@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Upgrade Atata.Cli.HtmlValidate package to v2.1.0.
+- Upgrade Atata package to v2.1.0.
 
 ## [2.0.0] - 2022-05-11
 
