@@ -1,20 +1,17 @@
-﻿using NUnit.Framework;
+﻿namespace Atata.HtmlValidation.IntegrationTests;
 
-namespace Atata.HtmlValidation.IntegrationTests
+[SetUpFixture]
+public class SetUpFixture
 {
-    [SetUpFixture]
-    public class SetUpFixture
+    [OneTimeSetUp]
+    public void GlobalSetUp()
     {
-        [OneTimeSetUp]
-        public void GlobalSetUp()
-        {
-            AtataContext.GlobalConfiguration
-                .UseChrome()
-                    .WithArguments("start-maximized")
-                .UseCulture("en-US")
-                .UseAllNUnitFeatures();
+        AtataContext.GlobalConfiguration
+            .UseChrome()
+                .WithArguments("start-maximized")
+            .UseCulture("en-US")
+            .UseAllNUnitFeatures();
 
-            AtataContext.GlobalConfiguration.AutoSetUpDriverToUse();
-        }
+        AtataContext.GlobalConfiguration.AutoSetUpDriverToUse();
     }
 }

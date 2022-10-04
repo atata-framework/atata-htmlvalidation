@@ -1,59 +1,52 @@
-﻿using System;
-using System.IO;
-using Atata.Cli.HtmlValidate;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
+﻿using Atata.Cli.HtmlValidate;
 
-namespace Atata.HtmlValidation.IntegrationTests
+namespace Atata.HtmlValidation.IntegrationTests;
+
+[TestFixture]
+public class PageObjectHtmlValidateExtensionsTests : UITestFixture
 {
-    [TestFixture]
-    public class PageObjectHtmlValidateExtensionsTests : UITestFixture
+    [Test]
+    public void ValidateHtml_WithoutErrors() =>
+        GoToTestPage("Errors0.html")
+            .ValidateHtml();
+
+    [Test]
+    public void ValidateHtml_WithErrors_WithOptions()
     {
-        [Test]
-        public void ValidateHtml_WithoutErrors()
+        var options = new HtmlValidationOptions
         {
-            GoToTestPage("Errors0.html")
-                .ValidateHtml();
-        }
+            OutputFormatter = HtmlValidateFormatter.Names.Json
+        };
 
-        [Test]
-        public void ValidateHtml_WithErrors_WithOptions()
-        {
-            var options = new HtmlValidationOptions
-            {
-                OutputFormatter = HtmlValidateFormatter.Names.Json
-            };
+        var sut = GoToTestPage("Errors1.html");
 
-            var sut = GoToTestPage("Errors1.html");
+        var exception = Assert.Throws<NUnit.Framework.AssertionException>(
+            () => sut.ValidateHtml(options));
 
-            var exception = Assert.Throws<NUnit.Framework.AssertionException>(
-                () => sut.ValidateHtml(options));
+        exception.ToResultSubject()
+            .ValueOf(x => x.Message).Should.Contain("\"errorCount\"");
+    }
 
-            exception.ToResultSubject()
-                .ValueOf(x => x.Message).Should.Contain("\"errorCount\"");
-        }
+    [Test]
+    public void ValidateHtml_WithErrors_AsWarning()
+    {
+        GoToTestPage("Errors1.html")
+            .ValidateHtml(asWarning: true);
 
-        [Test]
-        public void ValidateHtml_WithErrors_AsWarning()
-        {
-            GoToTestPage("Errors1.html")
-                .ValidateHtml(asWarning: true);
+        var assertionResults = TestExecutionContext.CurrentContext.CurrentResult.AssertionResults;
 
-            var assertionResults = TestExecutionContext.CurrentContext.CurrentResult.AssertionResults;
+        assertionResults.ToSubject(nameof(assertionResults))
+            .ValueOf(x => x.Count).Should.Equal(1)
+            .ValueOf(x => x[0].Status).Should.Equal(NUnit.Framework.Interfaces.AssertionStatus.Warning);
 
-            assertionResults.ToSubject(nameof(assertionResults))
-                .ValueOf(x => x.Count).Should.Equal(1)
-                .ValueOf(x => x[0].Status).Should.Equal(NUnit.Framework.Interfaces.AssertionStatus.Warning);
+        assertionResults.Clear();
+    }
 
-            assertionResults.Clear();
-        }
+    private static OrdinaryPage GoToTestPage(string name)
+    {
+        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestPages", name);
+        string url = "file:///" + filePath;
 
-        private static OrdinaryPage GoToTestPage(string name)
-        {
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestPages", name);
-            string url = "file:///" + filePath;
-
-            return Go.To<OrdinaryPage>(url: url);
-        }
+        return Go.To<OrdinaryPage>(url: url);
     }
 }

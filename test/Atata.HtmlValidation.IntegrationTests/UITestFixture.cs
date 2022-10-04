@@ -1,21 +1,14 @@
-﻿using NUnit.Framework;
+﻿namespace Atata.HtmlValidation.IntegrationTests;
 
-namespace Atata.HtmlValidation.IntegrationTests
+[TestFixture]
+[Parallelizable(ParallelScope.Self)]
+public class UITestFixture
 {
-    [TestFixture]
-    [Parallelizable(ParallelScope.Self)]
-    public class UITestFixture
-    {
-        [SetUp]
-        public void SetUp()
-        {
-            AtataContext.Configure().Build();
-        }
+    [SetUp]
+    public void SetUp() =>
+        AtataContext.Configure().Build();
 
-        [TearDown]
-        public void TearDown()
-        {
-            AtataContext.Current?.CleanUp();
-        }
-    }
+    [TearDown]
+    public void TearDown() =>
+        AtataContext.Current?.CleanUp();
 }

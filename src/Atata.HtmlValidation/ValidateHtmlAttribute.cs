@@ -19,9 +19,7 @@
         /// </summary>
         public bool AsWarning { get; set; }
 
-        protected override void Execute<TOwner>(TriggerContext<TOwner> context)
-        {
+        protected override void Execute<TOwner>(TriggerContext<TOwner> context) =>
             context.Component.Owner.ValidateHtml(asWarning: AsWarning);
-        }
     }
 }
