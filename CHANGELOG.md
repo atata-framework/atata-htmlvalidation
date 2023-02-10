@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"7.13.2"`.
+- Upgrade Atata package to v2.7.0.
 
 ## [2.2.0] - 2022-10-04
 
