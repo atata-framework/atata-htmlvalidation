@@ -21,6 +21,7 @@ namespace Atata.HtmlValidation
         /// The default builder returns the directory of <see cref="AtataContext.Artifacts"/> property of <see cref="AtataContext"/> argument
         /// or <c>AppDomain.CurrentDomain.BaseDirectory</c> if <see cref="AtataContext"/> argument is <see langword="null"/>.
         /// </summary>
+        // TODO: v3. Get rid of WorkingDirectoryBuilder in favor of WorkingDirectory.
         public Func<AtataContext, string> WorkingDirectoryBuilder { get; set; } =
             x => x?.Artifacts.FullName ?? AppDomain.CurrentDomain.BaseDirectory;
 

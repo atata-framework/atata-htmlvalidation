@@ -207,6 +207,7 @@ namespace Atata.HtmlValidation
 
         private void WriteToFile(string path, string contents)
         {
+            // TODO: v3. Use _atataContext.AddArtifact method to write file.
             if (_options.Encoding is null)
                 File.WriteAllText(path, contents);
             else
