@@ -13,7 +13,7 @@ namespace Atata.HtmlValidation
     /// </summary>
     public class HtmlValidator
     {
-        private static readonly object s_cliInstallationSyncObject = new object();
+        private static readonly object s_cliInstallationSyncObject = new();
 
         private static string s_installedCliVersion;
 
@@ -131,33 +131,22 @@ namespace Atata.HtmlValidation
         public async Task<HtmlValidationResult> ValidateAsync(string html) =>
             await Task.Run(() => Validate(html));
 
-        private static string ResolveFormatterFileExtension(string formatter)
-        {
-            switch (formatter)
+        private static string ResolveFormatterFileExtension(string formatter) =>
+            formatter switch
             {
-                case HtmlValidateFormatter.Names.Json:
-                    return ".json";
-                case HtmlValidateFormatter.Names.Checkstyle:
-                    return ".xml";
-                default:
-                    return ".txt";
-            }
-        }
+                HtmlValidateFormatter.Names.Json => ".json",
+                HtmlValidateFormatter.Names.Checkstyle => ".xml",
+                _ => ".txt",
+            };
 
-        private static bool ShouldSaveHtmlFile(bool isValid, HtmlSaveCondition saveCondition)
-        {
-            switch (saveCondition)
+        private static bool ShouldSaveHtmlFile(bool isValid, HtmlSaveCondition saveCondition) =>
+            saveCondition switch
             {
-                case HtmlSaveCondition.Never:
-                    return false;
-                case HtmlSaveCondition.Invalid:
-                    return !isValid;
-                case HtmlSaveCondition.Always:
-                    return true;
-                default:
-                    throw new InvalidEnumArgumentException(nameof(saveCondition), (int)saveCondition, typeof(HtmlSaveCondition));
-            }
-        }
+                HtmlSaveCondition.Never => false,
+                HtmlSaveCondition.Invalid => !isValid,
+                HtmlSaveCondition.Always => true,
+                _ => throw new InvalidEnumArgumentException(nameof(saveCondition), (int)saveCondition, typeof(HtmlSaveCondition)),
+            };
 
         private string ResolveWorkingDirectory(HtmlValidationOptions settings)
         {
@@ -230,7 +219,7 @@ namespace Atata.HtmlValidation
         }
 
         private HtmlValidateOptions CreateCliOptions(string formatter) =>
-            new HtmlValidateOptions
+            new()
             {
                 MaxWarnings = _options.MaxWarnings,
                 Config = _options.ConfigPath,
