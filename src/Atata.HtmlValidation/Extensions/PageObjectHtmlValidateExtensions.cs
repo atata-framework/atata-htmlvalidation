@@ -66,11 +66,10 @@ public static class PageObjectHtmlValidateExtensions
         {
             string errorMessage = $"{pageObject.ComponentFullName} HTML document, which contains errors:{Environment.NewLine}{validationResult.Output}";
 
-            IVerificationStrategy verificationStrategy = asWarning
-                ? (IVerificationStrategy)new ExpectationVerificationStrategy()
-                : new AssertionVerificationStrategy();
-
-            verificationStrategy.ReportFailure(errorMessage, null);
+            if (asWarning)
+                pageObject.Context.RaiseWarning(errorMessage);
+            else
+                pageObject.Context.RaiseError(errorMessage);
         }
     }
 }
