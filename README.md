@@ -239,7 +239,7 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
 - **`string HtmlValidatePackageVersion`**\
   Gets or sets the required version of "html-validate" NPM package.
   The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
-  The default value is `"7.13.2"`.
+  The default value is `"8.3.0"`.
   Set `null` to disable the version check and use any pre-installed version.
 
 ### Configure Default Options
