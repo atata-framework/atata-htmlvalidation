@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Atata.HtmlValidation;
+﻿namespace Atata.HtmlValidation;
 
 /// <summary>
 /// Represents the HTML validator.
@@ -204,7 +202,6 @@ public class HtmlValidator
         var cliOptions = CreateCliOptions(formatter);
 
         var cli = HtmlValidateCli.InDirectory(workingDirectory);
-        cli.Encoding = _options.Encoding;
 
         if (_options.CliCommandFactory != null)
             cli.CliCommandFactory = _options.CliCommandFactory;
