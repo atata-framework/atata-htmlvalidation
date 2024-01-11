@@ -1,4 +1,5 @@
-﻿using Atata.Cli.HtmlValidate;
+﻿using System.Runtime.InteropServices;
+using Atata.Cli.HtmlValidate;
 
 namespace Atata.HtmlValidation.IntegrationTests;
 
@@ -45,7 +46,12 @@ public class PageObjectHtmlValidateExtensionsTests : UITestFixture
     private static OrdinaryPage GoToTestPage(string name)
     {
         string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestPages", name);
-        string url = "file:///" + filePath;
+
+        string urlPrefix = RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)
+            ? "file:///"
+            : "file://";
+
+        string url = urlPrefix + filePath;
 
         return Go.To<OrdinaryPage>(url: url);
     }
