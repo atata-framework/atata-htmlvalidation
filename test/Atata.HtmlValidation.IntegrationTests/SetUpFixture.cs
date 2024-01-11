@@ -8,7 +8,7 @@ public class SetUpFixture
     {
         AtataContext.GlobalConfiguration
             .UseChrome()
-                .WithArguments("start-maximized")
+                .WithArguments("window-size=1200,800", "headless=new")
             .UseCulture("en-US")
             .UseAllNUnitFeatures();
 
