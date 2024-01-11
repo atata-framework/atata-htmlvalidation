@@ -19,10 +19,18 @@ jobs:
       projects: '**/*.sln'
       arguments: -c $(buildConfiguration) -warnaserror
 
-- job: RunTestsOnWindows
-  displayName: Run tests on Windows
+- job: RunTests
+  displayName: Run tests on
+  strategy:
+    matrix:
+      Linux:
+        imageName: 'ubuntu-latest'
+      macOS:
+        imageName: 'macOS-latest'
+      Windows:
+        imageName: 'windows-latest'
   pool:
-    vmImage: windows-latest
+    vmImage: $(imageName)
   steps:
   - task: UseDotNet@2
     displayName: Set up .NET SDK
@@ -36,7 +44,7 @@ jobs:
       arguments: -c $(buildConfiguration) -p:RunCodeAnalysis=false
   - task: DotNetCoreCLI@2
     displayName: Run tests
-    timeoutInMinutes: 30
+    timeoutInMinutes: 10
     inputs:
       command: test
       projects: '**/*Tests.csproj'
