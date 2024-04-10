@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>12.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>2.5.0</Version>
+    <Version>3.0.0-beta.1</Version>
     <Description>.NET library that adds HTML page validation to Atata using html-validate NPM package.
 
 The package targets .NET Standard 2.0, which supports .NET 5+, .NET Framework 4.6.1+ and .NET Core/Standard 2.0+.
