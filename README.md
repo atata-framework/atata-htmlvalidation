@@ -16,17 +16,17 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Using ValidateHtml Extension Method](#using-validatehtml-extension-method) 
-  - [Using ValidateHtmlAttribute Trigger](#using-validatehtmlattribute-trigger)
-  - [Using HtmlValidator](#using-htmlvalidator)
+  - [Using `ValidateHtml` extension method](#using-validatehtml-extension-method) 
+  - [Using `ValidateHtmlAttribute` trigger](#using-validatehtmlattribute-trigger)
+  - [Using `HtmlValidator`](#using-htmlvalidator)
 - [Configuration](#configuration)
-- [HtmlValidationOptions Properties](#htmlvalidationoptions-properties)
-- [HtmlValidationResult Members](#htmlvalidationresult-members)
-- [Validation Results](#validation-results)
+- [`HtmlValidationOptions` properties](#htmlvalidationoptions-properties)
+- [`HtmlValidationResult` members](#htmlvalidationresult-members)
+- [Validation results](#validation-results)
   - [Exception](#exception)
-  - [Result File](#result-file)
+  - [Result file](#result-file)
   - [Log](#log)
-- [Sample Project](#sample-project)
+- [Sample project](#sample-project)
 - [Feedback](#feedback)
 - [Thanks](#thanks)
 - [SemVer](#semver)
@@ -44,7 +44,7 @@
 
 ## Installation
 
-### NuGet Package
+### NuGet package
 
 Install [`Atata.HtmlValidation`](https://www.nuget.org/packages/Atata.HtmlValidation/) NuGet package.
 
@@ -58,7 +58,7 @@ Install [`Atata.HtmlValidation`](https://www.nuget.org/packages/Atata.HtmlValida
   dotnet add package Atata.HtmlValidation
   ```
 
-### NPM Package
+### NPM package
 
 Requires [html-validate](https://www.npmjs.com/package/html-validate) NPM package,
 as well as NPM itself, to be installed.
@@ -73,7 +73,7 @@ npm install -g html-validate
 
 ## Usage
 
-### Using ValidateHtml Extension Method
+### Using `ValidateHtml` extension method
 
 The primary way to execute validations is using `ValidateHtml` extension method:
 
@@ -96,21 +96,21 @@ The required version will be installed if "html-validate" package is not install
 By default, when validation fails, throws an assertion exception with a message containing a list of HTML errors.
 Produces a warning instead of assertion exception if `asWarning` argument is set to `true`.
 
-#### Validate by Default
+#### Validate by default
 
 ```cs
 Go.To<OrdinaryPage>(url: "some/url")
     .ValidateHtml();
 ```
 
-#### Validate As Warning
+#### Validate as warning
 
 ```cs
 Go.To<OrdinaryPage>(url: "some/url")
     .ValidateHtml(asWarning: true);
 ```
 
-#### Validate With Custom Options
+#### Validate with custom options
 
 ```cs
 var options = new HtmlValidationOptions
@@ -124,14 +124,14 @@ Go.To<OrdinaryPage>(url: "some/url")
     .ValidateHtml(options);
 ```
 
-#### Validate With Options Based on Default Ones
+#### Validate with options based on default
 
 ```cs
 Go.To<OrdinaryPage>(url: "some/url")
     .ValidateHtml(HtmlValidationOptions.Default.CloneWith(x => x.ConfigPath = "another/config.json"));
 ```
 
-### Using ValidateHtmlAttribute Trigger
+### Using `ValidateHtmlAttribute` trigger
 
 `ValidateHtmlAttribute` - the trigger attribute that indicates that the page HTML should be validated on the specified event.
 By default occurs upon the page object initialization.
@@ -140,7 +140,7 @@ Invokes `ValidateHtml` method using `HtmlValidationOptions.Default` options.
 Has `public bool AsWarning { get; set; }` property that gets or sets a value indicating whether to produce a warning instead of assertion exception on validation failure.
 The default value is `false`.
 
-#### Apply to Certain Page Object
+#### Apply to certain page object
 
 ```cs
 [ValidateHtml]
@@ -149,14 +149,14 @@ public class SomePage : Page<_>
 }
 ```
 
-#### Apply to All Page Objects
+#### Apply to all page objects
 
 ```cs
 AtataContext.GlobalConfiguration
     .Attributes.Global.Add(new ValidateHtmlAttribute { TargetType = typeof(PageObject<>) });
 ```
 
-### Using HtmlValidator
+### Using `HtmlValidator`
 
 This approach is a bit low-level one.
 Can be used without active `AtataContext`.
@@ -189,18 +189,15 @@ documentation page on how to create config files.
 Mostly, you can create standard `.htmlvalidate.json` file in the root of a test project with
 "Copy to Output Directory" property set to "Copy if newer".
 
-## HtmlValidationOptions Properties
+## `HtmlValidationOptions` properties
 
 - **`static HtmlValidationOptions Default { get; set; }`**\
   Gets or sets the default options.
-- **`Func<AtataContext, string> WorkingDirectoryBuilder { get; set; }`**\
-  Gets or sets the working directory builder.
-  HTML and result files should be saved in working directory.
-  The default builder returns the directory of `Artifacts` property of `AtataContext` argument
-  or `AppDomain.CurrentDomain.BaseDirectory` if `AtataContext` argument is `null`.
 - **`string WorkingDirectory { get; set; }`**\
   Gets or sets the working directory where HTML and result files should be saved.
-  Gets and sets the value from/to `WorkingDirectoryBuilder` property.
+  The default value is `null`, meaning to use `AtataContext.ArtifactsPath`.
+  The other value should be relative to Artifacts directory, for example, a name of subdirectory.
+  The path supports `AtataContext` template variables.
 - **`int? MaxWarnings { get; set; }`**\
   Gets or sets the maximum allowed warnings count.
   The default value is `null`, which means that warnings are allowed.
@@ -239,10 +236,10 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
 - **`string HtmlValidatePackageVersion`**\
   Gets or sets the required version of "html-validate" NPM package.
   The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
-  The default value is `"8.9.1"`.
+  The default value is `"8.18.1"`.
   Set `null` to disable the version check and use any pre-installed version.
 
-### Configure Default Options
+### Configure default options
 
 It is possible to configure default `HtmlValidationOptions` upon global initialization method.
 
@@ -263,7 +260,7 @@ HtmlValidationOptions.Default = new HtmlValidationOptions
 };
 ```
 
-## HtmlValidationResult Members
+## `HtmlValidationResult` members
 
 ### Properties
 
@@ -281,7 +278,7 @@ HtmlValidationOptions.Default = new HtmlValidationOptions
 - **`HtmlValidationResult MoveFilesToDirectory(string directory)`**\
   Moves the HTML and result files to another directory.
 
-## Validation Results
+## Validation results
 
 The results of failed validation using `ValidateHtml` method can be found in few places.
 
@@ -308,7 +305,7 @@ More information:
   https://html-validate.org/rules/element-required-attributes.html
 ```
 
-### Result File
+### Result file
 
 By default, the result file that is saved to Atata Artifacts directory is generated using "codeframe" formatter,
 which provides nice detailed report.
@@ -344,17 +341,16 @@ Additional details of validation execution can be found in Atata log.
 
 ```
 ...
-2021-07-23 19:06:22.7088  INFO > Validate: "<app>" page HTML document
-2021-07-23 19:06:22.7102 TRACE - > Get page source HTML
-2021-07-23 19:06:22.7319 TRACE - < Get page source HTML (0.021s)
-2021-07-23 19:06:22.7434 TRACE - HTML saved to file "D:\Development\atata-sample-app-tests\test\AtataSampleApp.UITests\bin\Debug\netcoreapp3.1\artifacts\2021-07-23 19_05_57\HtmlPageValidationTests\Validate(products)\785a0e99-359a-4905-b490-3a62c61fbf37.html"
-2021-07-23 19:06:23.3315 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter
-2021-07-23 19:06:24.2595 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter (0.927s) >> { IsSuccessful = False }
-2021-07-23 19:06:24.2615 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter
-2021-07-23 19:06:25.1164 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter (0.854s) >> { IsSuccessful = False }
-2021-07-23 19:06:25.1203  INFO - HTML validation report saved to file "D:\Development\atata-sample-app-tests\test\AtataSampleApp.UITests\bin\Debug\netcoreapp3.1\artifacts\2021-07-23 19_05_57\HtmlPageValidationTests\Validate(products)\785a0e99-359a-4905-b490-3a62c61fbf37.txt"
-2021-07-23 19:06:31.4848  INFO < Validate: "<app>" page HTML document (8.775s) >> NUnit.Framework.AssertionException: Wrong "<app>" page HTML document, which contains errors...
-2021-07-23 19:06:31.5586 ERROR Wrong "<app>" page HTML document, which contains errors:
+2024-04-16 19:06:22.708  INFO > Validate: "<app>" page HTML document
+2024-04-16 19:06:22.710 TRACE - > Get page source HTML
+2024-04-16 19:06:22.731 TRACE - < Get page source HTML (0.021s)
+2024-04-16 19:06:22.743 TRACE - HTML saved to file "785a0e99-359a-4905-b490-3a62c61fbf37.html"
+2024-04-16 19:06:23.331 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter
+2024-04-16 19:06:24.259 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter (0.927s) >> { IsSuccessful = False }
+2024-04-16 19:06:24.261 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter
+2024-04-16 19:06:25.116 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter (0.854s) >> { IsSuccessful = False }
+2024-04-16 19:06:25.120  INFO - HTML validation report saved to file "785a0e99-359a-4905-b490-3a62c61fbf37.txt"
+2024-04-16 19:06:25.480 ERROR - Wrong "<app>" page HTML document, which contains errors:
 785a0e99-359a-4905-b490-3a62c61fbf37.html
   69:22  error  <th> is missing required "scope" attribute     element-required-attributes
   70:22  error  <th> is missing required "scope" attribute     element-required-attributes
@@ -368,10 +364,12 @@ Additional details of validation execution can be found in Atata log.
 
 More information:
   https://html-validate.org/rules/element-required-attributes.html
+
+2024-04-16 19:06:25.484  INFO < Validate: "<app>" page HTML document (2.775s) >> NUnit.Framework.AssertionException: Wrong "<app>" page HTML document, which contains errors...
 ...
 ```
 
-## Sample Project
+## Sample project
 
 Check out [atata-framework/atata-sample-app-tests](https://github.com/atata-framework/atata-sample-app-tests) repository, which contains [`HtmlPageValidationTests`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/HtmlPageValidationTests.cs) test class that validates HTML of some pages.
 It also contains a sample [`.htmlvalidate.json`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/.htmlvalidate.json) configuration file.
