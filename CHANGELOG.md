@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Upgrade Atata package to v3.0.0.
 
+### Removed
+
+- Remove obsolete `HtmlValidationOptions` properties: `KeepHtmlFileWhenValid` and `RecommendedHtmlValidatePackageVersion`.
+
 ## [2.5.0] - 2024-01-12
 
 ### Changed

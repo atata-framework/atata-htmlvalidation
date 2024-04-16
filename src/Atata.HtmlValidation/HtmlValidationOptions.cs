@@ -78,17 +78,6 @@ public class HtmlValidationOptions
     public HtmlSaveCondition SaveHtmlToFile { get; set; } = HtmlSaveCondition.Invalid;
 
     /// <summary>
-    /// Gets or sets a value indicating whether to keep HTML file when it is valid.
-    /// The default value is <see langword="false"/>.
-    /// </summary>
-    [Obsolete("Use " + nameof(SaveHtmlToFile) + " instead.")] // Obsolete since v1.1.0.
-    public bool KeepHtmlFileWhenValid
-    {
-        get => SaveHtmlToFile == HtmlSaveCondition.Always;
-        set => SaveHtmlToFile = value ? HtmlSaveCondition.Always : HtmlSaveCondition.Invalid;
-    }
-
-    /// <summary>
     /// Gets or sets the encoding to use.
     /// The default value is <see langword="null"/>,
     /// which means that default encoding should be used.
@@ -102,13 +91,6 @@ public class HtmlValidationOptions
     /// which is <see cref="ProgramCli.DefaultShellCliCommandFactory"/>.
     /// </summary>
     public ICliCommandFactory CliCommandFactory { get; set; }
-
-    [Obsolete("Use " + nameof(HtmlValidatePackageVersion) + " instead.")] // Obsolete since v1.2.0.
-    public string RecommendedHtmlValidatePackageVersion
-    {
-        get => HtmlValidatePackageVersion;
-        set => HtmlValidatePackageVersion = value;
-    }
 
     /// <summary>
     /// Gets or sets the required version of "html-validate" NPM package.
