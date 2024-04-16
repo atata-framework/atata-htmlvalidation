@@ -11,24 +11,12 @@ public class HtmlValidationOptions
     public static HtmlValidationOptions Default { get; set; } = new HtmlValidationOptions();
 
     /// <summary>
-    /// Gets or sets the working directory builder.
-    /// HTML and result files should be saved in working directory.
-    /// The default builder returns the directory of <see cref="AtataContext.Artifacts"/> property of <see cref="AtataContext"/> argument
-    /// or <c>AppDomain.CurrentDomain.BaseDirectory</c> if <see cref="AtataContext"/> argument is <see langword="null"/>.
-    /// </summary>
-    // TODO: v3. Get rid of WorkingDirectoryBuilder in favor of WorkingDirectory.
-    public Func<AtataContext, string> WorkingDirectoryBuilder { get; set; } =
-        x => x?.Artifacts.FullName ?? AppDomain.CurrentDomain.BaseDirectory;
-
-    /// <summary>
     /// Gets or sets the working directory where HTML and result files should be saved.
-    /// Gets and sets the value from/to <see cref="WorkingDirectoryBuilder"/> property.
+    /// The default value is <see langword="null"/>, meaning to use <see cref="AtataContext.ArtifactsPath"/>.
+    /// The other value should be relative to Artifacts directory, for example, a name of subdirectory.
+    /// The path supports <see cref="AtataContext"/> template variables.
     /// </summary>
-    public string WorkingDirectory
-    {
-        get => WorkingDirectoryBuilder?.Invoke(null);
-        set => WorkingDirectoryBuilder = _ => value;
-    }
+    public string WorkingDirectory { get; set; }
 
     /// <summary>
     /// Gets or sets the maximum allowed warnings count.

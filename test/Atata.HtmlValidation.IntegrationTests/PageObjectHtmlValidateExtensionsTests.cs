@@ -16,7 +16,8 @@ public class PageObjectHtmlValidateExtensionsTests : UITestFixture
     {
         var options = new HtmlValidationOptions
         {
-            OutputFormatter = HtmlValidateFormatter.Names.Json
+            OutputFormatter = HtmlValidateFormatter.Names.Json,
+            WorkingDirectory = "HtmlValidation"
         };
 
         var sut = GoToTestPage("Errors1.html");
@@ -26,6 +27,8 @@ public class PageObjectHtmlValidateExtensionsTests : UITestFixture
 
         exception.ToResultSubject()
             .ValueOf(x => x.Message).Should.Contain("\"errorCount\"");
+
+        AtataContext.Current.Artifacts.Directories["HtmlValidation"].Files.Should.HaveCount(2);
     }
 
     [Test]

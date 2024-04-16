@@ -90,7 +90,7 @@ public class HtmlValidator
         string htmlFilePath = Path.Combine(workingDirectory, htmlFileName);
 
         WriteToFile(htmlFilePath, html);
-        _atataContext?.Log.Trace($"HTML saved to file \"{htmlFilePath}\"");
+        _atataContext?.Log.Trace($"HTML saved to file \"{htmlFileName}\"");
 
         EnsureCliIsInstalled();
 
@@ -100,16 +100,15 @@ public class HtmlValidator
         if (!result.IsSuccessful && _options.SaveResultToFile)
         {
             string resultFileExtension = _options.ResultFileExtension ?? ResolveFormatterFileExtension(_options.ResultFileFormatter);
-            resultFilePath = Path.Combine(
-                workingDirectory,
-                Path.GetFileNameWithoutExtension(htmlFilePath) + resultFileExtension);
+            string resultFileName = Path.GetFileNameWithoutExtension(htmlFileName) + resultFileExtension;
+            resultFilePath = Path.Combine(workingDirectory, resultFileName);
 
             string resultFileOutput = _options.ResultFileFormatter == _options.OutputFormatter
                 ? result.Output
                 : ExecuteCliCommand(workingDirectory, htmlFileName, _options.ResultFileFormatter).Output;
 
             WriteToFile(resultFilePath, resultFileOutput);
-            _atataContext?.Log.Info($"HTML validation report saved to file \"{resultFilePath}\"");
+            _atataContext?.Log.Info($"HTML validation report saved to file \"{resultFileName}\"");
         }
 
         if (!ShouldSaveHtmlFile(result.IsSuccessful, _options.SaveHtmlToFile))
@@ -144,10 +143,18 @@ public class HtmlValidator
 
     private string ResolveWorkingDirectory(HtmlValidationOptions settings)
     {
-        string workingDirectory = settings.WorkingDirectoryBuilder?.Invoke(_atataContext)
-            ?? AppDomain.CurrentDomain.BaseDirectory;
+        string workingDirectory = settings.WorkingDirectory;
 
-        workingDirectory = _atataContext?.FillTemplateString(workingDirectory) ?? workingDirectory;
+        if (_atataContext is not null)
+        {
+            workingDirectory = string.IsNullOrEmpty(workingDirectory)
+                ? _atataContext.ArtifactsPath
+                : Path.Combine(_atataContext.ArtifactsPath, _atataContext.FillTemplateString(workingDirectory));
+        }
+        else if (string.IsNullOrEmpty(workingDirectory))
+        {
+            workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        }
 
         if (!Directory.Exists(workingDirectory))
             Directory.CreateDirectory(workingDirectory);
@@ -190,7 +197,6 @@ public class HtmlValidator
 
     private void WriteToFile(string path, string contents)
     {
-        // TODO: v3. Use _atataContext.AddArtifact method to write file.
         if (_options.Encoding is null)
             File.WriteAllText(path, contents);
         else

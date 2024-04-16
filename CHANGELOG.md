@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Remove obsolete `HtmlValidationOptions` properties: `KeepHtmlFileWhenValid` and `RecommendedHtmlValidatePackageVersion`.
+- Remove `Func<AtataContext, string> WorkingDirectoryBuilder` property of `HtmlValidationOptions` in favor of using `string WorkingDirectory` property.
 
 ## [2.5.0] - 2024-01-12
 
