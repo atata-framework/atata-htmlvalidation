@@ -85,8 +85,9 @@ public class HtmlValidator
     public HtmlValidationResult Validate(string html)
     {
         string workingDirectory = ResolveWorkingDirectory(_options);
+        string baseFileName = Guid.NewGuid().ToString();
 
-        string htmlFileName = $"{Guid.NewGuid()}.html";
+        string htmlFileName = baseFileName + ".html";
         string htmlFilePath = Path.Combine(workingDirectory, htmlFileName);
 
         WriteToFile(htmlFilePath, html);
@@ -94,21 +95,32 @@ public class HtmlValidator
 
         EnsureCliIsInstalled();
 
-        var result = ExecuteCliCommand(workingDirectory, htmlFileName, _options.OutputFormatter);
+        string tempOutputFileName = baseFileName + ".tmp";
+        string tempOutputFilePath = Path.Combine(workingDirectory, tempOutputFileName);
+
+        var result = ExecuteCliCommand(workingDirectory, htmlFileName, _options.OutputFormatter, tempOutputFileName);
         string resultFilePath = null;
 
-        if (!result.IsSuccessful && _options.SaveResultToFile)
+        try
         {
-            string resultFileExtension = _options.ResultFileExtension ?? ResolveFormatterFileExtension(_options.ResultFileFormatter);
-            string resultFileName = Path.GetFileNameWithoutExtension(htmlFileName) + resultFileExtension;
-            resultFilePath = Path.Combine(workingDirectory, resultFileName);
+            if (!result.IsSuccessful && _options.SaveResultToFile)
+            {
+                string resultFileExtension = _options.ResultFileExtension ?? ResolveFormatterFileExtension(_options.ResultFileFormatter);
+                string resultFileName = baseFileName + resultFileExtension;
+                resultFilePath = Path.Combine(workingDirectory, resultFileName);
 
-            string resultFileOutput = _options.ResultFileFormatter == _options.OutputFormatter
-                ? result.Output
-                : ExecuteCliCommand(workingDirectory, htmlFileName, _options.ResultFileFormatter).Output;
+                if (_options.ResultFileFormatter == _options.OutputFormatter)
+                    File.Move(tempOutputFilePath, resultFilePath);
+                else
+                    ExecuteCliCommand(workingDirectory, htmlFileName, _options.ResultFileFormatter, resultFileName);
 
-            WriteToFile(resultFilePath, resultFileOutput);
-            _atataContext?.Log.Info($"HTML validation report saved to file \"{resultFileName}\"");
+                _atataContext?.Log.Info($"HTML validation report saved to file \"{resultFileName}\"");
+            }
+        }
+        finally
+        {
+            if (File.Exists(tempOutputFilePath))
+                File.Delete(tempOutputFilePath);
         }
 
         if (!ShouldSaveHtmlFile(result.IsSuccessful, _options.SaveHtmlToFile))
@@ -203,9 +215,9 @@ public class HtmlValidator
             File.WriteAllText(path, contents, _options.Encoding);
     }
 
-    private HtmlValidateResult ExecuteCliCommand(string workingDirectory, string htmlFileName, string formatter)
+    private HtmlValidateResult ExecuteCliCommand(string workingDirectory, string htmlFileName, string formatter, string outputFilePath)
     {
-        var cliOptions = CreateCliOptions(formatter);
+        var cliOptions = CreateCliOptions(formatter, outputFilePath);
 
         var cli = HtmlValidateCli.InDirectory(workingDirectory);
 
@@ -217,11 +229,11 @@ public class HtmlValidator
             () => cli.Validate(htmlFileName, cliOptions));
     }
 
-    private HtmlValidateOptions CreateCliOptions(string formatter) =>
+    private HtmlValidateOptions CreateCliOptions(string formatter, string outputFilePath) =>
         new()
         {
             MaxWarnings = _options.MaxWarnings,
             Config = _options.ConfigPath,
-            Formatter = new HtmlValidateFormatter(formatter)
+            Formatter = new HtmlValidateFormatter(formatter, outputFilePath)
         };
 }
