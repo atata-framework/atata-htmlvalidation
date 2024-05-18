@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0] - 2024-05-18
 
+### Changed
+
+- Upgrade Atata package reference to v3.1.0.
+
 ### Fixed
 
 - Validation result output cuts off when greater than 65536 characters on non-Windows OSs (#9).
