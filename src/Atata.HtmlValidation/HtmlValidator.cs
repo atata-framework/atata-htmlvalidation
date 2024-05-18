@@ -120,12 +120,12 @@ public class HtmlValidator
         finally
         {
             if (File.Exists(tempOutputFilePath))
-                File.Delete(tempOutputFilePath);
+                DeleteTempFileSafely(tempOutputFilePath);
         }
 
         if (!ShouldSaveHtmlFile(result.IsSuccessful, _options.SaveHtmlToFile))
         {
-            File.Delete(htmlFilePath);
+            DeleteTempFileSafely(htmlFilePath);
             htmlFilePath = null;
         }
 
@@ -213,6 +213,18 @@ public class HtmlValidator
             File.WriteAllText(path, contents);
         else
             File.WriteAllText(path, contents, _options.Encoding);
+    }
+
+    private void DeleteTempFileSafely(string filePath)
+    {
+        try
+        {
+            File.Delete(filePath);
+        }
+        catch (Exception exception)
+        {
+            _atataContext?.Log.Warn(exception, $"Failed to delete temporary file \"{Path.GetFileName(filePath)}\".");
+        }
     }
 
     private HtmlValidateResult ExecuteCliCommand(string workingDirectory, string htmlFileName, string formatter, string outputFilePath)
