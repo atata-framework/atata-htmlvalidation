@@ -8,7 +8,10 @@ public class SetUpFixture
     {
         AtataContext.GlobalConfiguration
             .UseChrome()
-                .WithArguments("window-size=1200,800", "headless=new")
+                .WithArguments(
+                    "window-size=1200,800",
+                    "headless=new",
+                    "disable-search-engine-choice-screen")
             .UseCulture("en-US")
             .UseAllNUnitFeatures();
 
