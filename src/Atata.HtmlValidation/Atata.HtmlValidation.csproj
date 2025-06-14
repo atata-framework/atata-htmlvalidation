@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>12.0</LangVersion>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
     <Version>3.2.0</Version>
     <Description>.NET library that adds HTML page validation to Atata using html-validate NPM package.
 
