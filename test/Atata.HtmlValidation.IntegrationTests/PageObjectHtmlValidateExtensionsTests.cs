@@ -14,7 +14,8 @@ public class PageObjectHtmlValidateExtensionsTests : UITestFixture
     [Test]
     public void ValidateHtml_WithErrors_WithOptions()
     {
-        var options = new HtmlValidationOptions
+        // Arrange
+        HtmlValidationOptions options = new()
         {
             OutputFormatter = HtmlValidateFormatter.Names.Json,
             WorkingDirectory = "HtmlValidation"
@@ -22,11 +23,13 @@ public class PageObjectHtmlValidateExtensionsTests : UITestFixture
 
         var sut = GoToTestPage("Errors1.html");
 
+        // Act
         var exception = Assert.Throws<NUnit.Framework.AssertionException>(
             () => sut.ValidateHtml(options));
 
+        // Assert
         exception.ToResultSubject()
-            .ValueOf(x => x.Message).Should.Contain("\"errorCount\"");
+            .ValueOf(x => x!.Message).Should.Contain("\"errorCount\"");
 
         AtataContext.Current.Artifacts.Directories["HtmlValidation"].Files.Should.HaveCount(2);
     }
@@ -34,9 +37,13 @@ public class PageObjectHtmlValidateExtensionsTests : UITestFixture
     [Test]
     public void ValidateHtml_WithErrors_AsWarning()
     {
-        GoToTestPage("Errors1.html")
-            .ValidateHtml(asWarning: true);
+        // Arrange
+        var sut = GoToTestPage("Errors1.html");
 
+        // Act
+        sut.ValidateHtml(asWarning: true);
+
+        // Assert
         var assertionResults = TestExecutionContext.CurrentContext.CurrentResult.AssertionResults;
 
         assertionResults.ToSubject(nameof(assertionResults))
