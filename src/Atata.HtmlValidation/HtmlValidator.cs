@@ -9,11 +9,11 @@ public class HtmlValidator
 {
     private static readonly object s_cliInstallationSyncObject = new();
 
-    private static string s_installedCliVersion;
+    private static string? s_installedCliVersion;
 
     private readonly HtmlValidationOptions _options;
 
-    private readonly AtataContext _atataContext;
+    private readonly AtataContext? _atataContext;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HtmlValidator"/> class
@@ -50,9 +50,11 @@ public class HtmlValidator
     /// </summary>
     /// <param name="options">The options.</param>
     /// <param name="atataContext">The context, which can be <see langword="null"/>.</param>
-    public HtmlValidator(HtmlValidationOptions options, AtataContext atataContext)
+    public HtmlValidator(HtmlValidationOptions options, AtataContext? atataContext)
     {
-        _options = options.CheckNotNull(nameof(options));
+        Guard.ThrowIfNull(options);
+
+        _options = options;
         _atataContext = atataContext;
     }
 
@@ -62,10 +64,12 @@ public class HtmlValidator
     /// <param name="version">The version.</param>
     public static void EnsureCliIsInstalled(string version)
     {
-        version.CheckNotNullOrWhitespace(nameof(version));
+        Guard.ThrowIfNullOrWhitespace(version);
 
-        var options = HtmlValidationOptions.Default.CloneWith(x => x.HtmlValidatePackageVersion = version);
-        var validator = new HtmlValidator(options);
+        HtmlValidationOptions options = HtmlValidationOptions.Default.CloneWith(
+            x => x.HtmlValidatePackageVersion = version);
+        HtmlValidator validator = new(options);
+
         validator.EnsureCliIsInstalled();
     }
 
@@ -88,7 +92,7 @@ public class HtmlValidator
         string baseFileName = Guid.NewGuid().ToString();
 
         string htmlFileName = baseFileName + ".html";
-        string htmlFilePath = Path.Combine(workingDirectory, htmlFileName);
+        string? htmlFilePath = Path.Combine(workingDirectory, htmlFileName);
 
         WriteToFile(htmlFilePath, html);
         _atataContext?.Log.Trace($"HTML saved to file \"{htmlFileName}\"");
@@ -99,7 +103,7 @@ public class HtmlValidator
         string tempOutputFilePath = Path.Combine(workingDirectory, tempOutputFileName);
 
         var result = ExecuteCliCommand(workingDirectory, htmlFileName, _options.OutputFormatter, tempOutputFileName);
-        string resultFilePath = null;
+        string? resultFilePath = null;
 
         try
         {
@@ -155,15 +159,15 @@ public class HtmlValidator
 
     private string ResolveWorkingDirectory(HtmlValidationOptions settings)
     {
-        string workingDirectory = settings.WorkingDirectory;
+        string? workingDirectory = settings.WorkingDirectory;
 
         if (_atataContext is not null)
         {
-            workingDirectory = string.IsNullOrEmpty(workingDirectory)
+            workingDirectory = workingDirectory is null or []
                 ? _atataContext.ArtifactsPath
                 : Path.Combine(_atataContext.ArtifactsPath, _atataContext.FillTemplateString(workingDirectory));
         }
-        else if (string.IsNullOrEmpty(workingDirectory))
+        else if (workingDirectory is null or [])
         {
             workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }

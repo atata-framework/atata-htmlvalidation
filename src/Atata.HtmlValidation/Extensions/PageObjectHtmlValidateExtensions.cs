@@ -30,7 +30,7 @@ public static class PageObjectHtmlValidateExtensions
     /// <returns>The same page object.</returns>
     public static TPageObject ValidateHtml<TPageObject>(
         this TPageObject pageObject,
-        HtmlValidationOptions options = null,
+        HtmlValidationOptions? options = null,
         bool asWarning = false)
         where TPageObject : PageObject<TPageObject>
     {
@@ -38,7 +38,7 @@ public static class PageObjectHtmlValidateExtensions
             new LogSection($"Validate: {pageObject.ComponentFullName} HTML document"),
             () =>
             {
-                string html = null;
+                string? html = null;
 
                 pageObject.Context.Log.ExecuteSection(
                     new LogSection("Get page source HTML", LogLevel.Trace),
@@ -46,19 +46,19 @@ public static class PageObjectHtmlValidateExtensions
 
                 Validate(
                     pageObject,
-                    html,
-                    options ?? HtmlValidationOptions.Default ?? new HtmlValidationOptions(),
+                    html!,
+                    options,
                     asWarning);
             });
 
         return pageObject;
     }
 
-    private static void Validate(UIComponent pageObject, string html, HtmlValidationOptions options, bool asWarning)
+    private static void Validate(UIComponent pageObject, string html, HtmlValidationOptions? options, bool asWarning)
     {
-        HtmlValidator validator = new HtmlValidator(
-            options ?? HtmlValidationOptions.Default ?? new HtmlValidationOptions(),
-            pageObject.Context);
+        options ??= HtmlValidationOptions.Default ?? new();
+
+        HtmlValidator validator = new(options, pageObject.Context);
 
         HtmlValidationResult validationResult = validator.Validate(html);
 

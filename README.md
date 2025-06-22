@@ -80,7 +80,7 @@ The primary way to execute validations is using `ValidateHtml` extension method:
 ```cs
 public static TPageObject ValidateHtml<TPageObject>(
     this TPageObject pageObject,
-    HtmlValidationOptions options = null,
+    HtmlValidationOptions? options = null,
     bool asWarning = false)
     where TPageObject : PageObject<TPageObject>;
 ```
@@ -193,7 +193,7 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
 
 - **`static HtmlValidationOptions Default { get; set; }`**\
   Gets or sets the default options.
-- **`string WorkingDirectory { get; set; }`**\
+- **`string? WorkingDirectory { get; set; }`**\
   Gets or sets the working directory where HTML and result files should be saved.
   The default value is `null`, meaning to use `AtataContext.ArtifactsPath`.
   The other value should be relative to Artifacts directory, for example, a name of subdirectory.
@@ -202,8 +202,9 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
   Gets or sets the maximum allowed warnings count.
   The default value is `null`, which means that warnings are allowed.
   Use `0` to disallow warnings.
-- **`string ConfigPath { get; set; }`**\
+- **`string? ConfigPath { get; set; }`**\
   Gets or sets the configuration file path (full or relative to `WorkingDirectory`).
+  The default value is `null`.
 - **`string OutputFormatter { get; set; }`**\
   Gets or sets the output formatter name.
   The default value is `HtmlValidateFormatter.Names.Stylish`.
@@ -212,7 +213,7 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
   Gets or sets the result file formatter name.
   The default value is `HtmlValidateFormatter.Names.Codeframe`.
   See [`HtmlValidateFormatter.Names`](https://github.com/atata-framework/atata-cli-htmlvalidate/blob/04344a8d4452921537dd9c83d806735e5d4427e7/src/Atata.Cli.HtmlValidate/HtmlValidateFormatter.cs#L39) class for options.
-- **`string ResultFileExtension`**\
+- **`string? ResultFileExtension`**\
   Gets or sets the result file extension, like ".txt" or ".json".
   The default value is `null`, which means that
   extension should be resolved automatically corresponding to `ResultFileFormatter` value.
@@ -224,11 +225,11 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
   The default value is `HtmlSaveCondition.Invalid`,
   meaning that HTML file should be saved only when it is not valid.
   Other available options are: `HtmlSaveCondition.Never` and `HtmlSaveCondition.Always`.
-- **`Encoding Encoding`**\
+- **`Encoding? Encoding`**\
   Gets or sets the encoding to use.
   The default value is `null`,
   which means that default encoding should be used.
-- **`ICliCommandFactory CliCommandFactory`**\
+- **`ICliCommandFactory? CliCommandFactory`**\
   Gets or sets the CLI command factory.
   The default value is `null`,
   which means that default CLI command factory should be used,
@@ -268,9 +269,9 @@ HtmlValidationOptions.Default = new HtmlValidationOptions
   Gets a value indicating whether this result is successful.
 - **`string Output { get; }`**\
   Gets the text output of result.
-- **`string HtmlFilePath { get; }`**\
+- **`string? HtmlFilePath { get; }`**\
   Gets the HTML file path.
-- **`string ResultFilePath { get; }`**\
+- **`string? ResultFilePath { get; }`**\
   Gets the result file path.
 
 ### Methods

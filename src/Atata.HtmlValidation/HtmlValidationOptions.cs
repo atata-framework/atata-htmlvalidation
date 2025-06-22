@@ -8,7 +8,7 @@ public class HtmlValidationOptions
     /// <summary>
     /// Gets or sets the default options.
     /// </summary>
-    public static HtmlValidationOptions Default { get; set; } = new HtmlValidationOptions();
+    public static HtmlValidationOptions Default { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the working directory where HTML and result files should be saved.
@@ -16,7 +16,7 @@ public class HtmlValidationOptions
     /// The other value should be relative to Artifacts directory, for example, a name of subdirectory.
     /// The path supports <see cref="AtataContext"/> template variables.
     /// </summary>
-    public string WorkingDirectory { get; set; }
+    public string? WorkingDirectory { get; set; }
 
     /// <summary>
     /// Gets or sets the maximum allowed warnings count.
@@ -27,8 +27,9 @@ public class HtmlValidationOptions
 
     /// <summary>
     /// Gets or sets the configuration file path (full or relative to <see cref="WorkingDirectory"/>).
+    /// The default value is <see langword="null"/>.
     /// </summary>
-    public string ConfigPath { get; set; }
+    public string? ConfigPath { get; set; }
 
     /// <summary>
     /// Gets or sets the output formatter name.
@@ -49,7 +50,7 @@ public class HtmlValidationOptions
     /// The default value is <see langword="null"/>, which means that
     /// extension should be resolved automatically corresponding to <see cref="ResultFileFormatter"/> value.
     /// </summary>
-    public string ResultFileExtension { get; set; }
+    public string? ResultFileExtension { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether to save validation result output to file.
@@ -70,7 +71,7 @@ public class HtmlValidationOptions
     /// The default value is <see langword="null"/>,
     /// which means that default encoding should be used.
     /// </summary>
-    public Encoding Encoding { get; set; }
+    public Encoding? Encoding { get; set; }
 
     /// <summary>
     /// Gets or sets the CLI command factory.
@@ -78,7 +79,7 @@ public class HtmlValidationOptions
     /// which means that default CLI command factory should be used,
     /// which is <see cref="ProgramCli.DefaultShellCliCommandFactory"/>.
     /// </summary>
-    public ICliCommandFactory CliCommandFactory { get; set; }
+    public ICliCommandFactory? CliCommandFactory { get; set; }
 
     /// <summary>
     /// Gets or sets the required version of "html-validate" NPM package.
@@ -95,7 +96,7 @@ public class HtmlValidationOptions
     /// <returns>The copy of this instance.</returns>
     public HtmlValidationOptions CloneWith(Action<HtmlValidationOptions> action)
     {
-        action.CheckNotNull(nameof(action));
+        Guard.ThrowIfNull(action);
 
         HtmlValidationOptions copy = Clone();
         action.Invoke(copy);

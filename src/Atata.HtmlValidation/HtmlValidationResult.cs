@@ -5,7 +5,7 @@
 /// </summary>
 public class HtmlValidationResult
 {
-    public HtmlValidationResult(bool isSuccessful, string output, string htmlFilePath, string resultFilePath)
+    public HtmlValidationResult(bool isSuccessful, string output, string? htmlFilePath, string? resultFilePath)
     {
         IsSuccessful = isSuccessful;
         Output = output;
@@ -26,12 +26,12 @@ public class HtmlValidationResult
     /// <summary>
     /// Gets the HTML file path.
     /// </summary>
-    public string HtmlFilePath { get; }
+    public string? HtmlFilePath { get; }
 
     /// <summary>
     /// Gets the result file path.
     /// </summary>
-    public string ResultFilePath { get; }
+    public string? ResultFilePath { get; }
 
     /// <summary>
     /// Moves the HTML and result files to another directory.
@@ -40,7 +40,7 @@ public class HtmlValidationResult
     /// <returns>The new <see cref="HtmlValidationResult"/> instance with updated file path property values.</returns>
     public HtmlValidationResult MoveFilesToDirectory(string directory)
     {
-        directory.CheckNotNullOrWhitespace(nameof(directory));
+        Guard.ThrowIfNullOrWhitespace(directory);
 
         return new HtmlValidationResult(
             IsSuccessful,
@@ -49,9 +49,9 @@ public class HtmlValidationResult
             MoveFileToDirectory(ResultFilePath, directory));
     }
 
-    private static string MoveFileToDirectory(string filePath, string directory)
+    private static string? MoveFileToDirectory(string? filePath, string directory)
     {
-        if (!string.IsNullOrEmpty(filePath))
+        if (filePath?.Length > 0)
         {
             string newFilePath = Path.Combine(directory, Path.GetFileName(filePath));
             File.Move(filePath, newFilePath);
