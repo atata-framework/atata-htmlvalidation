@@ -2,7 +2,7 @@
 
 [TestFixture]
 [Parallelizable(ParallelScope.Self)]
-public class UITestFixture
+public class UITestSuite
 {
     [SetUp]
     public void SetUp() =>

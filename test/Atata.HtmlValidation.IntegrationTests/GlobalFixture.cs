@@ -1,7 +1,7 @@
 ﻿namespace Atata.HtmlValidation.IntegrationTests;
 
 [SetUpFixture]
-public class SetUpFixture
+public sealed class GlobalFixture
 {
     [OneTimeSetUp]
     public void GlobalSetUp()

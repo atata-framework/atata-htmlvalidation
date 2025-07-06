@@ -1,7 +1,6 @@
 ﻿namespace Atata.HtmlValidation.IntegrationTests;
 
-[TestFixture]
-public class PageObjectHtmlValidateExtensionsTests : UITestFixture
+public sealed class PageObjectHtmlValidateExtensionsTests : UITestSuite
 {
     [Test]
     public void ValidateHtml_WithoutErrors() =>

@@ -1,6 +1,6 @@
 ﻿namespace Atata.HtmlValidation.IntegrationTests;
 
-public class HtmlValidatorTests
+public sealed class HtmlValidatorTests
 {
     [Test]
     public void Validate_WithManyErrors()
