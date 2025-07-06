@@ -5,7 +5,7 @@
 [![Build status](https://dev.azure.com/atata-framework/atata-htmlvalidation/_apis/build/status/atata-htmlvalidation-ci?branchName=main)](https://dev.azure.com/atata-framework/atata-htmlvalidation/_build/latest?definitionId=47&branchName=main)
 [![Slack](https://img.shields.io/badge/join-Slack-green.svg?colorB=4EB898)](https://join.slack.com/t/atata-framework/shared_invite/zt-5j3lyln7-WD1ZtMDzXBhPm0yXLDBzbA)
 [![Atata docs](https://img.shields.io/badge/docs-Atata_Framework-orange.svg)](https://atata.io)
-[![Twitter](https://img.shields.io/badge/follow-@AtataFramework-blue.svg)](https://twitter.com/AtataFramework)
+[![X](https://img.shields.io/badge/follow-@AtataFramework-blue.svg)](https://x.com/AtataFramework)
 
 **Atata.HtmlValidation** is a .NET library that adds HTML page validation to [Atata](https://github.com/atata-framework/atata) using [html-validate](https://www.npmjs.com/package/html-validate) NPM package.
 
@@ -375,6 +375,12 @@ More information:
 Check out [atata-framework/atata-sample-app-tests](https://github.com/atata-framework/atata-sample-app-tests) repository, which contains [`HtmlPageValidationTests`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/HtmlPageValidationTests.cs) test class that validates HTML of some pages.
 It also contains a sample [`.htmlvalidate.json`](https://github.com/atata-framework/atata-sample-app-tests/blob/master/test/AtataSampleApp.UITests/.htmlvalidate.json) configuration file.
 
+## Community
+
+- Slack: [https://atata-framework.slack.com](https://join.slack.com/t/atata-framework/shared_invite/zt-5j3lyln7-WD1ZtMDzXBhPm0yXLDBzbA)
+- X: https://x.com/AtataFramework
+- Stack Overflow: https://stackoverflow.com/questions/tagged/atata
+
 ## Feedback
 
 Any feedback, issues and feature requests are welcome.
@@ -383,9 +389,21 @@ If you faced an issue please report it to [Atata.HtmlValidation Issues](https://
 [ask a question on Stack Overflow](https://stackoverflow.com/questions/ask?tags=atata+csharp) using [atata](https://stackoverflow.com/questions/tagged/atata) tag
 or use another [Atata Contact](https://atata.io/contact/) way.
 
+## Contact author
+
+Contact me if you need a help in test automation using Atata Framework, or if you are looking for a quality test automation implementation for your project.
+
+- LinkedIn: https://www.linkedin.com/in/yevgeniy-shunevych
+- Email: yevgeniy.shunevych@gmail.com
+- Consulting: https://atata.io/consulting/
+
 ## Thanks
 
 The library is implemented thanks to the sponsorship of **[Lombiq Technologies](https://lombiq.com/)**.
+
+## Contributing
+
+Check out [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ## SemVer
 
