@@ -1,7 +1,4 @@
-﻿using System.Text;
-using Atata.Cli.HtmlValidate;
-
-namespace Atata.HtmlValidation.IntegrationTests;
+﻿namespace Atata.HtmlValidation.IntegrationTests;
 
 public class HtmlValidatorTests
 {

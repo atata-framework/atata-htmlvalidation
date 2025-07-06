@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Atata.Cli.HtmlValidate;
-
-namespace Atata.HtmlValidation.IntegrationTests;
+﻿namespace Atata.HtmlValidation.IntegrationTests;
 
 [TestFixture]
 public class PageObjectHtmlValidateExtensionsTests : UITestFixture
