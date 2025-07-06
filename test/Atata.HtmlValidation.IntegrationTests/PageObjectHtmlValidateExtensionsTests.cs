@@ -47,8 +47,8 @@ public class PageObjectHtmlValidateExtensionsTests : UITestFixture
         var assertionResults = TestExecutionContext.CurrentContext.CurrentResult.AssertionResults;
 
         assertionResults.ToSubject(nameof(assertionResults))
-            .ValueOf(x => x.Count).Should.Equal(1)
-            .ValueOf(x => x[0].Status).Should.Equal(NUnit.Framework.Interfaces.AssertionStatus.Warning);
+            .ValueOf(x => x.Count).Should.Be(1)
+            .ValueOf(x => x[0].Status).Should.Be(NUnit.Framework.Interfaces.AssertionStatus.Warning);
 
         assertionResults.Clear();
     }
