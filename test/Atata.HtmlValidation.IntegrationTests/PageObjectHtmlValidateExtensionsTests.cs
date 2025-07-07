@@ -1,6 +1,6 @@
 ﻿namespace Atata.HtmlValidation.IntegrationTests;
 
-public sealed class PageObjectHtmlValidateExtensionsTests : UITestSuite
+public sealed class PageObjectHtmlValidateExtensionsTests : AtataTestSuite
 {
     [Test]
     public void ValidateHtml_WithoutErrors() =>
@@ -20,14 +20,22 @@ public sealed class PageObjectHtmlValidateExtensionsTests : UITestSuite
         var sut = GoToTestPage("Errors1.html");
 
         // Act
-        var exception = Assert.Throws<NUnit.Framework.AssertionException>(
-            () => sut.ValidateHtml(options));
+        var act = sut.ToSutSubject()
+            .Invoking(x => x.ValidateHtml(options, false));
 
         // Assert
-        exception.ToResultSubject()
-            .ValueOf(x => x!.Message).Should.Contain("\"errorCount\"");
+        act.Should.Throw<global::NUnit.Framework.AssertionException>()
+            .ValueOf(x => x.Message).Should.Contain("\"errorCount\"");
 
-        AtataContext.Current.Artifacts.Directories["HtmlValidation"].Files.Should.HaveCount(2);
+        Context.Artifacts.Directories["HtmlValidation"].Files.Should.HaveCount(2);
+
+        var assertionResults = TestExecutionContext.CurrentContext.CurrentResult.AssertionResults;
+
+        assertionResults.ToSubject(nameof(assertionResults))
+            .ValueOf(x => x.Count).Should.Be(1)
+            .ValueOf(x => x[0].Status).Should.Be(global::NUnit.Framework.Interfaces.AssertionStatus.Failed);
+
+        assertionResults.Clear();
     }
 
     [Test]
@@ -44,7 +52,7 @@ public sealed class PageObjectHtmlValidateExtensionsTests : UITestSuite
 
         assertionResults.ToSubject(nameof(assertionResults))
             .ValueOf(x => x.Count).Should.Be(1)
-            .ValueOf(x => x[0].Status).Should.Be(NUnit.Framework.Interfaces.AssertionStatus.Warning);
+            .ValueOf(x => x[0].Status).Should.Be(global::NUnit.Framework.Interfaces.AssertionStatus.Warning);
 
         assertionResults.Clear();
     }

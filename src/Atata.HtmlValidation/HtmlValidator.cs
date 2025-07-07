@@ -13,11 +13,11 @@ public class HtmlValidator
 
     private readonly HtmlValidationOptions _options;
 
-    private readonly AtataContext? _atataContext;
+    private readonly WebSession? _session;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HtmlValidator"/> class
-    /// using <see cref="HtmlValidationOptions.Default"/> options and <see cref="AtataContext.Current"/>.
+    /// using <see cref="HtmlValidationOptions.Default"/> options and <see cref="WebSession.Current"/>.
     /// </summary>
     public HtmlValidator()
         : this(HtmlValidationOptions.Default)
@@ -26,36 +26,36 @@ public class HtmlValidator
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HtmlValidator" /> class
-    /// using <see cref="HtmlValidationOptions.Default" /> options and the specified <paramref name="atataContext" />.
+    /// using <see cref="HtmlValidationOptions.Default" /> options and the specified <paramref name="session" />.
     /// </summary>
-    /// <param name="atataContext">The context, which can be <see langword="null"/>.</param>
-    public HtmlValidator(AtataContext atataContext)
-        : this(HtmlValidationOptions.Default, atataContext)
+    /// <param name="session">The web session, which can be <see langword="null"/>.</param>
+    public HtmlValidator(WebSession session)
+        : this(HtmlValidationOptions.Default, session)
     {
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HtmlValidator"/> class
-    /// with the specified <paramref name="options"/> and using <see cref="AtataContext.Current"/>.
+    /// with the specified <paramref name="options"/> and using <see cref="WebSession.Current"/>.
     /// </summary>
     /// <param name="options">The options.</param>
     public HtmlValidator(HtmlValidationOptions options)
-        : this(options, AtataContext.Current)
+        : this(options, WebSession.Current)
     {
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="HtmlValidator"/> class.
-    /// with the specified <paramref name="options"/> and <paramref name="atataContext"/>.
+    /// with the specified <paramref name="options"/> and <paramref name="session"/>.
     /// </summary>
     /// <param name="options">The options.</param>
-    /// <param name="atataContext">The context, which can be <see langword="null"/>.</param>
-    public HtmlValidator(HtmlValidationOptions options, AtataContext? atataContext)
+    /// <param name="session">The web session, which can be <see langword="null"/>.</param>
+    public HtmlValidator(HtmlValidationOptions options, WebSession? session)
     {
         Guard.ThrowIfNull(options);
 
         _options = options;
-        _atataContext = atataContext;
+        _session = session;
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public class HtmlValidator
         string? htmlFilePath = Path.Combine(workingDirectory, htmlFileName);
 
         WriteToFile(htmlFilePath, html);
-        _atataContext?.Log.Trace($"HTML saved to file \"{htmlFileName}\"");
+        _session?.Log.Trace($"HTML saved to file \"{htmlFileName}\"");
 
         EnsureCliIsInstalled();
 
@@ -118,7 +118,7 @@ public class HtmlValidator
                 else
                     ExecuteCliCommand(workingDirectory, htmlFileName, _options.ResultFileFormatter, resultFileName);
 
-                _atataContext?.Log.Info($"HTML validation report saved to file \"{resultFileName}\"");
+                _session?.Log.Info($"HTML validation report saved to file \"{resultFileName}\"");
             }
         }
         finally
@@ -145,7 +145,7 @@ public class HtmlValidator
         {
             HtmlValidateFormatter.Names.Json => ".json",
             HtmlValidateFormatter.Names.Checkstyle => ".xml",
-            _ => ".txt",
+            _ => ".txt"
         };
 
     private static bool ShouldSaveHtmlFile(bool isValid, HtmlSaveCondition saveCondition) =>
@@ -154,18 +154,18 @@ public class HtmlValidator
             HtmlSaveCondition.Never => false,
             HtmlSaveCondition.Invalid => !isValid,
             HtmlSaveCondition.Always => true,
-            _ => throw new InvalidEnumArgumentException(nameof(saveCondition), (int)saveCondition, typeof(HtmlSaveCondition)),
+            _ => throw new InvalidEnumArgumentException(nameof(saveCondition), (int)saveCondition, typeof(HtmlSaveCondition))
         };
 
     private string ResolveWorkingDirectory(HtmlValidationOptions settings)
     {
         string? workingDirectory = settings.WorkingDirectory;
 
-        if (_atataContext is not null)
+        if (_session is not null)
         {
             workingDirectory = workingDirectory is null or []
-                ? _atataContext.ArtifactsPath
-                : Path.Combine(_atataContext.ArtifactsPath, _atataContext.FillTemplateString(workingDirectory));
+                ? _session.Context.ArtifactsPath
+                : Path.Combine(_session.Context.ArtifactsPath, _session.Variables.FillTemplateString(workingDirectory));
         }
         else if (workingDirectory is null or [])
         {
@@ -180,16 +180,16 @@ public class HtmlValidator
 
     private void ExecuteAction(string sectionMessage, Action action)
     {
-        if (_atataContext is null)
+        if (_session is null)
             action.Invoke();
         else
-            _atataContext.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), action);
+            _session.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), action);
     }
 
     private TResult ExecuteFunction<TResult>(string sectionMessage, Func<TResult> function) =>
-        _atataContext is null
+        _session is null
             ? function.Invoke()
-            : _atataContext.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), function);
+            : _session.Log.ExecuteSection(new LogSection(sectionMessage, LogLevel.Trace), function);
 
     private void EnsureCliIsInstalled()
     {
@@ -227,7 +227,7 @@ public class HtmlValidator
         }
         catch (Exception exception)
         {
-            _atataContext?.Log.Warn(exception, $"Failed to delete temporary file \"{Path.GetFileName(filePath)}\".");
+            _session?.Log.Warn(exception, $"Failed to delete temporary file \"{Path.GetFileName(filePath)}\".");
         }
     }
 

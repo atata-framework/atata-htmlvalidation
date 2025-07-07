@@ -10,11 +10,13 @@ public sealed class HtmlValidatorTests
             "artifacts",
             Path.GetRandomFileName());
 
-        HtmlValidator sut = new(new HtmlValidationOptions
-        {
-            OutputFormatter = HtmlValidateFormatter.Names.Json,
-            WorkingDirectory = workingDirectory
-        });
+        HtmlValidator sut = new(
+            new()
+            {
+                OutputFormatter = HtmlValidateFormatter.Names.Json,
+                WorkingDirectory = workingDirectory
+            },
+            null);
 
         StringBuilder htmlBuilder = new(
             """
@@ -46,7 +48,7 @@ public sealed class HtmlValidatorTests
             .ValueOf(x => x.HtmlFilePath).Should.StartWith(workingDirectory)
             .ValueOf(x => x.ResultFilePath).Should.StartWith(workingDirectory);
 
-        new FileSubject(result.ResultFilePath).Length.Should.BeGreater(100_000);
+        new FileSubject(result.ResultFilePath!).Length.Should.BeGreater(100_000);
 
         Directory.Delete(workingDirectory, true);
     }

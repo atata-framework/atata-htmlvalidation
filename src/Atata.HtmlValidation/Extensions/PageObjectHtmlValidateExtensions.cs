@@ -34,13 +34,13 @@ public static class PageObjectHtmlValidateExtensions
         bool asWarning = false)
         where TPageObject : PageObject<TPageObject>
     {
-        pageObject.Context.Log.ExecuteSection(
+        pageObject.Session.Log.ExecuteSection(
             new LogSection($"Validate: {pageObject.ComponentFullName} HTML document"),
             () =>
             {
                 string? html = null;
 
-                pageObject.Context.Log.ExecuteSection(
+                pageObject.Session.Log.ExecuteSection(
                     new LogSection("Get page source HTML", LogLevel.Trace),
                     () => { html = pageObject.PageSource; });
 
@@ -58,7 +58,7 @@ public static class PageObjectHtmlValidateExtensions
     {
         options ??= HtmlValidationOptions.Default ?? new();
 
-        HtmlValidator validator = new(options, pageObject.Context);
+        HtmlValidator validator = new(options, pageObject.Session);
 
         HtmlValidationResult validationResult = validator.Validate(html);
 
@@ -67,9 +67,9 @@ public static class PageObjectHtmlValidateExtensions
             string errorMessage = $"{pageObject.ComponentFullName} HTML document, which contains errors:{Environment.NewLine}{validationResult.Output}";
 
             if (asWarning)
-                pageObject.Context.RaiseWarning(errorMessage);
+                pageObject.Session.RaiseAssertionWarning(errorMessage);
             else
-                pageObject.Context.RaiseError(errorMessage);
+                pageObject.Session.RaiseAssertionError(errorMessage);
         }
     }
 }
