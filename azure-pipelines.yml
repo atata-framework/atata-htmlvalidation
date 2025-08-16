@@ -23,7 +23,7 @@ jobs:
   displayName: Run tests on
   strategy:
     matrix:
-      Linux:
+      Ubuntu:
         imageName: 'ubuntu-latest'
       macOS:
         imageName: 'macOS-latest'
