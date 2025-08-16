@@ -17,4 +17,7 @@ public sealed class GlobalFixture : AtataGlobalFixture
                     "window-size=1200,800",
                     "headless=new",
                     "disable-search-engine-choice-screen")));
+
+    protected override void ConfigureGlobalAtataContext(AtataContextBuilder builder) =>
+        builder.EventSubscriptions.Add(SetUpWebDriversForUseEventHandler.Instance);
 }
