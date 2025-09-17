@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Upgrade Atata package reference to v4.0.0-beta.2.
+- Upgrade Atata package reference to v4.0.0-beta.7.
 - Upgrade Atata.Cli.HtmlValidate package reference to v4.0.0-beta.2.
 - Enable nullable reference types feature.
 - Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"10.0.0"`.
