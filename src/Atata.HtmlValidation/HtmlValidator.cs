@@ -138,7 +138,7 @@ public class HtmlValidator
 
     /// <inheritdoc cref="Validate(string)"/>
     public async Task<HtmlValidationResult> ValidateAsync(string html) =>
-        await Task.Run(() => Validate(html));
+        await Task.Run(() => Validate(html)).ConfigureAwait(false);
 
     private static string ResolveFormatterFileExtension(string formatter) =>
         formatter switch
