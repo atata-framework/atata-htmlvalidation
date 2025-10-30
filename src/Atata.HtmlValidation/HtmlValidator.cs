@@ -241,7 +241,7 @@ public class HtmlValidator
             cli.CliCommandFactory = _options.CliCommandFactory;
 
         return ExecuteFunction(
-            $"Execute html-validate CLI command for \"{htmlFileName}\" with \"{cliOptions.Formatter.Name}\" formatter",
+            $"Execute html-validate CLI command for \"{htmlFileName}\" with \"{cliOptions.Formatter?.Name}\" formatter",
             () => cli.Validate(htmlFileName, cliOptions));
     }
 
