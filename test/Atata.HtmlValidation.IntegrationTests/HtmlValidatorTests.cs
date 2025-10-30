@@ -52,4 +52,44 @@ public sealed class HtmlValidatorTests
 
         Directory.Delete(workingDirectory, true);
     }
+
+    [Test]
+    public void Validate_WhenWorkingDirectoryAndConfigPathAreAbsolute()
+    {
+        string workingDirectory = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory,
+            "artifacts",
+            Path.GetRandomFileName());
+
+        HtmlValidator sut = new(
+            new()
+            {
+                OutputFormatter = HtmlValidateFormatter.Names.Json,
+                WorkingDirectory = workingDirectory,
+                ConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".htmlvalidate.json")
+            },
+            null);
+
+        StringBuilder htmlBuilder = new(
+            """
+            <!DOCTYPE html>
+            <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+            <head>
+                <meta charset="utf-8">
+                <title>Some title</title>
+            </head>
+            <body>
+            Hello world!
+            </body>
+            </html>
+            """);
+
+        var result = sut.Validate(htmlBuilder.ToString());
+
+        result.ToResultSubject()
+            .ValueOf(x => x.IsSuccessful).Should.BeTrue()
+            .ValueOf(x => x.Output).Should.Be("[]")
+            .ValueOf(x => x.HtmlFilePath).Should.BeNull()
+            .ValueOf(x => x.ResultFilePath).Should.BeNull();
+    }
 }
