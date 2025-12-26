@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net8.0;net462</TargetFrameworks>
     <Version>4.0.0-beta.3</Version>
     <Description>
 C#/.NET library that adds HTML page validation to Atata using html-validate NPM package.
@@ -15,7 +15,7 @@ Features:
 - Saves HTML and validation results to artifact files.
 - Can produce either error or warning.
 
-The package targets .NET Standard 2.0, which supports .NET 5+, .NET Framework 4.6.1+ and .NET Core/Standard 2.0+.
+The package targets .NET 8.0 and .NET Framework 4.6.2.
     </Description>
     <RepositoryUrl>https://github.com/atata-framework/atata-htmlvalidation</RepositoryUrl>
     <PackageId>Atata.HtmlValidation</PackageId>
@@ -27,7 +27,7 @@ The package targets .NET Standard 2.0, which supports .NET 5+, .NET Framework 4.
   <ItemGroup>
     <PackageReference Include="Atata" Version="4.0.0-beta.10" />
     <PackageReference Include="Atata.Cli.HtmlValidate" Version="4.0.0-beta.2" />
-    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="All" />
+    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
