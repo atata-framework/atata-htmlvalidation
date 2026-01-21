@@ -25,7 +25,7 @@ The package targets .NET Standard 2.0, which supports .NET 5+, .NET Framework 4.
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atata" Version="3.7.0" />
+    <PackageReference Include="Atata" Version="3.9.0" />
     <PackageReference Include="Atata.Cli.HtmlValidate" Version="2.4.0" />
     <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="All" />
   </ItemGroup>
