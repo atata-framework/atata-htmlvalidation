@@ -35,7 +35,7 @@ public sealed class PageObjectHtmlValidateExtensionsTests : AtataTestSuite
             .ValueOf(x => x.Count).Should.Be(1)
             .ValueOf(x => x[0].Status).Should.Be(global::NUnit.Framework.Interfaces.AssertionStatus.Failed);
 
-        assertionResults.Clear();
+        ClearNUnitAssertionResults();
     }
 
     [Test]
@@ -54,7 +54,7 @@ public sealed class PageObjectHtmlValidateExtensionsTests : AtataTestSuite
             .ValueOf(x => x.Count).Should.Be(1)
             .ValueOf(x => x[0].Status).Should.Be(global::NUnit.Framework.Interfaces.AssertionStatus.Warning);
 
-        assertionResults.Clear();
+        ClearNUnitAssertionResults();
     }
 
     private static OrdinaryPage GoToTestPage(string name)
@@ -68,5 +68,18 @@ public sealed class PageObjectHtmlValidateExtensionsTests : AtataTestSuite
         string url = urlPrefix + filePath;
 
         return Go.To<OrdinaryPage>(url: url);
+    }
+
+    private static void ClearNUnitAssertionResults()
+    {
+        TestResult testResult = TestExecutionContext.CurrentContext.CurrentResult;
+        ref var assertionResults = ref TestResultAccessors.GetAssertionResults(testResult);
+        assertionResults.Clear();
+    }
+
+    public static class TestResultAccessors
+    {
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_assertionResults")]
+        public static extern ref List<global::NUnit.Framework.Interfaces.AssertionResult> GetAssertionResults(TestResult user);
     }
 }
