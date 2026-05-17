@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change package target frameworks from .NET Standard 2.0 to .NET 8.0 and .NET Framework 4.6.2.
 - Upgrade Atata package reference to v4.0.0-beta.14.
 - Upgrade Atata.Cli.HtmlValidate package reference to v4.0.0-beta.3.
-- Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"10.7.0"`.
+- Change `HtmlValidationOptions.HtmlValidatePackageVersion` property default value to `"10.15.0"`.
 
 ## [3.4.0] - 2025-10-30
 
