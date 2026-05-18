@@ -1,4 +1,6 @@
-﻿namespace Atata.HtmlValidation.IntegrationTests;
+﻿using Atata.WebDriverSetup;
+
+namespace Atata.HtmlValidation.IntegrationTests;
 
 [SetUpFixture]
 public sealed class GlobalFixture
@@ -15,6 +17,7 @@ public sealed class GlobalFixture
             .UseCulture("en-US")
             .UseAllNUnitFeatures();
 
+        DriverSetup.GlobalConfiguration.WithCheckCertificateRevocationList(false);
         AtataContext.GlobalConfiguration.AutoSetUpDriverToUse();
     }
 }
