@@ -1,4 +1,6 @@
-﻿namespace Atata.HtmlValidation.IntegrationTests;
+﻿using System.Runtime.CompilerServices;
+
+namespace Atata.HtmlValidation.IntegrationTests;
 
 public sealed class PageObjectHtmlValidateExtensionsTests : UITestSuite
 {
@@ -46,7 +48,7 @@ public sealed class PageObjectHtmlValidateExtensionsTests : UITestSuite
             .ValueOf(x => x.Count).Should.Be(1)
             .ValueOf(x => x[0].Status).Should.Be(NUnit.Framework.Interfaces.AssertionStatus.Warning);
 
-        assertionResults.Clear();
+        ClearNUnitAssertionResults();
     }
 
     private static OrdinaryPage GoToTestPage(string name)
@@ -60,5 +62,18 @@ public sealed class PageObjectHtmlValidateExtensionsTests : UITestSuite
         string url = urlPrefix + filePath;
 
         return Go.To<OrdinaryPage>(url: url);
+    }
+
+    private static void ClearNUnitAssertionResults()
+    {
+        TestResult testResult = TestExecutionContext.CurrentContext.CurrentResult;
+        ref var assertionResults = ref TestResultAccessors.GetAssertionResults(testResult);
+        assertionResults.Clear();
+    }
+
+    public static class TestResultAccessors
+    {
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "_assertionResults")]
+        public static extern ref List<global::NUnit.Framework.Interfaces.AssertionResult> GetAssertionResults(TestResult user);
     }
 }
