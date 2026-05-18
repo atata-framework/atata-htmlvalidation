@@ -6,9 +6,6 @@ namespace Atata.HtmlValidation.IntegrationTests;
 [SetUpFixture]
 public sealed class GlobalFixture : AtataGlobalFixture
 {
-    protected override void ConfigureAtataContextGlobalProperties(AtataContextGlobalProperties globalProperties) =>
-        globalProperties.UseRootNamespaceOf<GlobalFixture>();
-
     protected override void ConfigureAtataContextBaseConfiguration(AtataContextBuilder builder) =>
         builder.Sessions.AddWebDriver(x => x
             .UseStartScopes(AtataContextScopes.Test)
@@ -19,5 +16,5 @@ public sealed class GlobalFixture : AtataGlobalFixture
                     "disable-search-engine-choice-screen")));
 
     protected override void ConfigureGlobalAtataContext(AtataContextBuilder builder) =>
-        builder.EventSubscriptions.Add(SetUpWebDriversForUseEventHandler.Instance);
+        builder.SetUpWebDriversForUse();
 }
