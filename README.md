@@ -3,13 +3,16 @@
 [![NuGet](http://img.shields.io/nuget/v/Atata.HtmlValidation.svg?style=flat)](https://www.nuget.org/packages/Atata.HtmlValidation/)
 [![GitHub release](https://img.shields.io/github/release/atata-framework/atata-htmlvalidation.svg)](https://github.com/atata-framework/atata-htmlvalidation/releases)
 [![Build status](https://dev.azure.com/atata-framework/atata-htmlvalidation/_apis/build/status/atata-htmlvalidation-ci?branchName=main)](https://dev.azure.com/atata-framework/atata-htmlvalidation/_build/latest?definitionId=47&branchName=main)
+[![Atata Templates](https://img.shields.io/badge/get-Atata_Templates-green.svg?color=4BC21F)](https://marketplace.visualstudio.com/items?itemName=YevgeniyShunevych.AtataTemplates)\
 [![Slack](https://img.shields.io/badge/join-Slack-green.svg?colorB=4EB898)](https://join.slack.com/t/atata-framework/shared_invite/zt-5j3lyln7-WD1ZtMDzXBhPm0yXLDBzbA)
 [![Atata docs](https://img.shields.io/badge/docs-Atata_Framework-orange.svg)](https://atata.io)
 [![X](https://img.shields.io/badge/follow-@AtataFramework-blue.svg)](https://x.com/AtataFramework)
 
 **Atata.HtmlValidation** is a C#/.NET library that adds HTML page validation to [Atata](https://github.com/atata-framework/atata) using [html-validate](https://www.npmjs.com/package/html-validate) NPM package.
 
-*The package targets .NET Standard 2.0, which supports .NET 5+, .NET Framework 4.6.1+ and .NET Core/Standard 2.0+.*
+**[What's new in v4.0.0](https://github.com/atata-framework/atata-htmlvalidation/releases/tag/v4.0.0)**
+
+*The package targets .NET 8.0 and .NET Framework 4.6.2.*
 
 ## Table of Contents
 
@@ -159,7 +162,7 @@ AtataContext.GlobalConfiguration
 ### Using `HtmlValidator`
 
 This approach is a bit low-level one.
-Can be used without active `AtataContext`.
+Can be used without active `WebSession`.
 
 `HtmlValidator` - uses "html-validate" NPM package to execute HTML validation.
 If required version of "html-validate" package is not installed, installs it.
@@ -237,7 +240,7 @@ Mostly, you can create standard `.htmlvalidate.json` file in the root of a test 
 - **`string HtmlValidatePackageVersion`**\
   Gets or sets the required version of "html-validate" NPM package.
   The required version will be installed if "html-validate" package is not installed or the installed version differs from the required one.
-  The default value is `"10.2.1"`.
+  The default value is `"11.12.0"`.
   Set `null` to disable the version check and use any pre-installed version.
 
 ### Configure default options
@@ -391,7 +394,8 @@ or use another [Atata Contact](https://atata.io/contact/) way.
 
 ## Contact author
 
-Contact me if you need a help in test automation using Atata Framework, or if you are looking for a quality test automation implementation for your project.
+Contact me, Yevhenii Shunevych, if you need help with test automation using the Atata Framework.
+You can [hire me for test automation development or consulting](https://atata.io/consulting/) if you are looking for a high-quality, maintainable automation solution for your project.
 
 - LinkedIn: https://www.linkedin.com/in/yevgeniy-shunevych
 - Email: yevgeniy.shunevych@gmail.com
