@@ -14,27 +14,6 @@
 
 *The package targets .NET 8.0 and .NET Framework 4.6.2.*
 
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Using `ValidateHtml` extension method](#using-validatehtml-extension-method) 
-  - [Using `ValidateHtmlAttribute` trigger](#using-validatehtmlattribute-trigger)
-  - [Using `HtmlValidator`](#using-htmlvalidator)
-- [Configuration](#configuration)
-- [`HtmlValidationOptions` properties](#htmlvalidationoptions-properties)
-- [`HtmlValidationResult` members](#htmlvalidationresult-members)
-- [Validation results](#validation-results)
-  - [Exception](#exception)
-  - [Result file](#result-file)
-  - [Log](#log)
-- [Sample project](#sample-project)
-- [Feedback](#feedback)
-- [Thanks](#thanks)
-- [SemVer](#semver)
-- [License](#license)
-
 ## Features
 
 - Uses [CLI of html-validate](https://html-validate.org/usage/cli.html) NPM package.
@@ -73,6 +52,12 @@ Therefore, it is recommended when possible to preinstall `html-validate` package
 ```
 npm install -g html-validate
 ```
+
+## Dependencies
+
+- [Atata](https://www.nuget.org/packages/Atata) package
+- [Atata.Cli.HtmlValidate](https://www.nuget.org/packages/Atata.Cli.HtmlValidate) package
+- [html-validate](https://www.npmjs.com/package/html-validate) NPM package
 
 ## Usage
 
