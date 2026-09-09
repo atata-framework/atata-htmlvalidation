@@ -330,16 +330,16 @@ Additional details of validation execution can be found in Atata log.
 
 ```
 ...
-2024-04-16 19:06:22.708  INFO > Validate: "<app>" page HTML document
-2024-04-16 19:06:22.710 TRACE - > Get page source HTML
-2024-04-16 19:06:22.731 TRACE - < Get page source HTML (0.021s)
-2024-04-16 19:06:22.743 TRACE - HTML saved to file "785a0e99-359a-4905-b490-3a62c61fbf37.html"
-2024-04-16 19:06:23.331 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter
-2024-04-16 19:06:24.259 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter (0.927s) >> { IsSuccessful = False }
-2024-04-16 19:06:24.261 TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter
-2024-04-16 19:06:25.116 TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter (0.854s) >> { IsSuccessful = False }
-2024-04-16 19:06:25.120  INFO - HTML validation report saved to file "785a0e99-359a-4905-b490-3a62c61fbf37.txt"
-2024-04-16 19:06:25.480 ERROR - Wrong "<app>" page HTML document, which contains errors:
+00:00:00.000 KGlN  INFO > Validate: "<app>" page HTML document
+00:00:00.001 KGlN TRACE - > Get page source HTML
+00:00:00.005 KGlN TRACE - < Get page source HTML (0.021s)
+00:00:00.008 KGlN TRACE - HTML saved to file "785a0e99-359a-4905-b490-3a62c61fbf37.html"
+00:00:00.008 KGlN TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter
+00:00:00.406 KGlN TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "stylish" formatter (0.927s) >> { IsSuccessful = False }
+00:00:00.406 KGlN TRACE - > Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter
+00:00:00.820 KGlN TRACE - < Execute html-validate CLI command for "785a0e99-359a-4905-b490-3a62c61fbf37.html" with "codeframe" formatter (0.854s) >> { IsSuccessful = False }
+00:00:00.820 KGlN  INFO - HTML validation report saved to file "785a0e99-359a-4905-b490-3a62c61fbf37.txt"
+00:00:00.822 KGlN ERROR - Wrong "<app>" page HTML document, which contains errors:
 785a0e99-359a-4905-b490-3a62c61fbf37.html
   69:22  error  <th> is missing required "scope" attribute     element-required-attributes
   70:22  error  <th> is missing required "scope" attribute     element-required-attributes
@@ -353,8 +353,6 @@ Additional details of validation execution can be found in Atata log.
 
 More information:
   https://html-validate.org/rules/element-required-attributes.html
-
-2024-04-16 19:06:25.484  INFO < Validate: "<app>" page HTML document (2.775s) >> NUnit.Framework.AssertionException: Wrong "<app>" page HTML document, which contains errors...
 ...
 ```
 
